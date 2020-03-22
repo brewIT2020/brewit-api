@@ -1,6 +1,5 @@
 package pl.brewit;
 
-import account.AccountDao;
 import io.javalin.Javalin;
 
 /**
