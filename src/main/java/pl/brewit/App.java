@@ -1,5 +1,6 @@
 package pl.brewit;
 
+import account.AccountDao;
 import io.javalin.Javalin;
 
 /**
@@ -10,4 +11,6 @@ public class App {
         Javalin app = Javalin.create().start(7000);
         app.get("/", ctx -> ctx.result("Hello World"));
     }
+
+
 }
