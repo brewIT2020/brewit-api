@@ -18,7 +18,7 @@ public interface CrudRepository<T> {
 
   Optional<T> findById(Long id);
 
-  Collection<T> findAll();
+//  Collection<T> findAll();
 
   void remove(T object);
 }

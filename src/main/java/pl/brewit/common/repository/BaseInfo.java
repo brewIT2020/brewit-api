@@ -10,46 +10,45 @@ import java.time.LocalDateTime;
 /**
  * Project: brewit-api
  *
- * Created on: 22.03.2020
+ * <p>Created on: 22.03.2020
  *
- * Author    : Kamil Szerląg
+ * <p>Author : Kamil Szerląg
  */
-
 @Embeddable
 public class BaseInfo {
 
-    @Column(name = "active", columnDefinition = "true")
-    private Boolean active;
+  @Column(name = "active", columnDefinition = "true")
+  private Boolean active;
 
-    @Column(name = "createdDate", nullable = false, insertable = true, updatable = false)
-    @CreationTimestamp
-    private LocalDateTime createdDate;
+  @Column(name = "createdDate", nullable = false, insertable = true, updatable = false)
+  @CreationTimestamp
+  private LocalDateTime createdDate;
 
-    @Column(name = "updatedDate", nullable = true, updatable = true)
-    @UpdateTimestamp
-    private LocalDateTime updatedDate;
+  @Column(name = "updatedDate", nullable = true, updatable = true)
+  @UpdateTimestamp
+  private LocalDateTime updatedDate;
 
-    public LocalDateTime getCreatedDate() {
-        return createdDate;
-    }
+  public LocalDateTime getCreatedDate() {
+    return createdDate;
+  }
 
-    public Boolean getActive() {
-        return active;
-    }
+  public Boolean getActive() {
+    return active;
+  }
 
-    public void setActive(Boolean active) {
-        this.active = active;
-    }
+  public void setActive(Boolean active) {
+    this.active = active;
+  }
 
-    public void setCreatedDate(LocalDateTime createdDate) {
-        this.createdDate = createdDate;
-    }
+  public void setCreatedDate(LocalDateTime createdDate) {
+    this.createdDate = createdDate;
+  }
 
-    public LocalDateTime getUpdatedDate() {
-        return updatedDate;
-    }
+  public LocalDateTime getUpdatedDate() {
+    return updatedDate;
+  }
 
-    public void setUpdatedDate(LocalDateTime updatedDate) {
-        this.updatedDate = updatedDate;
-    }
+  public void setUpdatedDate(LocalDateTime updatedDate) {
+    this.updatedDate = updatedDate;
+  }
 }

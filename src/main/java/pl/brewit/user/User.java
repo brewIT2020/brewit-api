@@ -5,7 +5,7 @@ import pl.brewit.common.repository.BaseEntity;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 
 /**
  * Project: brewit-api
@@ -26,12 +26,12 @@ public class User extends BaseEntity {
 
   // Encrypted Password
   @Column(name = "password")
-  @NotNull
+  @NotBlank
   private String password;
 
   @Column(name = "role", updatable = true, nullable = false)
   @Enumerated(EnumType.STRING)
-  private Role role;
+  private UserRole userRole;
 
   public String getUsername() {
     return username;
