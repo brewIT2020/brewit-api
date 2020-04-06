@@ -1,11 +1,15 @@
 package pl.brewit.common.repository;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+import com.google.inject.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.persistence.*;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceException;
+import javax.persistence.criteria.CriteriaBuilder;
 import java.lang.reflect.ParameterizedType;
-import java.util.Collection;
 import java.util.Optional;
 
 /**
@@ -15,68 +19,70 @@ import java.util.Optional;
  *
  * <p>Author : Kamil Szerląg
  */
-public abstract class AbstractCrudRepository<T> implements CrudRepository<T> {
+@Singleton
+public class SimpleCrudRepository<T> implements CrudRepository<T> {
 
-  protected static final Logger LOGGER = LoggerFactory.getLogger(AbstractCrudRepository.class);
+  protected static final Logger LOGGER = LoggerFactory.getLogger(SimpleCrudRepository.class);
 
   // TODO: 22.03.2020 We must create singleton class letting us to inject EM in different place
-  private EntityManagerFactory emf = Persistence.createEntityManagerFactory("BrewIT");
+  @Inject
+  protected Provider<EntityManager> em;
+
+  protected EntityManager getEntityManager() {
+    return em.get();
+  }
+
+  protected CriteriaBuilder getCriteriaBuilderForUser() {
+    return getEntityManager().getCriteriaBuilder();
+  }
 
   @Override
   public void save(T object) {
-    EntityManager em = emf.createEntityManager();
-    em.getTransaction().begin();
+    getEntityManager().getTransaction().begin();
     try {
-      em.persist(object);
+      getEntityManager().persist(object);
     } catch (PersistenceException e) {
       LOGGER.warn("Object with class {} can't be persisted", object.getClass().getName(), e);
-      em.getTransaction().rollback();
+      getEntityManager().getTransaction().rollback();
     } finally {
-      em.close();
+      getEntityManager().close();
     }
   }
 
   @Override
   public void update(T object) {
-    EntityManager em = emf.createEntityManager();
-    em.getTransaction().begin();
+    getEntityManager().getTransaction().begin();
     try {
-      em.merge(object);
+      getEntityManager().merge(object);
     } catch (PersistenceException e) {
       LOGGER.warn("Object with class {} can't be merged", object.getClass().getName(), e);
-      em.getTransaction().rollback();
+      getEntityManager().getTransaction().rollback();
     } finally {
-      em.close();
+      getEntityManager().close();
     }
   }
 
   @Override
   public Optional<T> findById(Long id) {
-    EntityManager em = emf.createEntityManager();
     Class<T> type =
         ((Class)
             ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0]);
     T entity = null;
     try {
-      entity = (T) em.find(type, id);
+      entity = (T) getEntityManager().find(type, id);
     } finally {
-      em.close();
+      getEntityManager().close();
     }
     return Optional.ofNullable(entity);
   }
 
   // TODO: 22.03.2020 creating criteria query for retriving all active entities
-  @Override
-  public Collection<T> findAll() {
-    EntityManager em = emf.createEntityManager();
-    return null;
-  }
+//  @Override
+//  public Collection<T> findAll() {
+//    CriteriaBuilder cb = getEntityManager().createQuery();
+//  }
 
   // TODO: 22.03.2020 removing entity
   @Override
   public void remove(T object) {}
-
-  public EntityManagerFactory getEmf() {
-    return emf;
-  }
 }
