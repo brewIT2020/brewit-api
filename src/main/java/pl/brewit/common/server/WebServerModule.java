@@ -1,7 +1,6 @@
-package pl.brewit.common.modules;
+package pl.brewit.common.server;
 
 import com.google.inject.AbstractModule;
-import pl.brewit.common.server.JavalinWebServer;
 
 /**
  * Project: brewit-api

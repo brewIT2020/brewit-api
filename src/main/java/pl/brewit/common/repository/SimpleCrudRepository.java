@@ -25,8 +25,13 @@ public class SimpleCrudRepository<T> implements CrudRepository<T> {
   protected static final Logger LOGGER = LoggerFactory.getLogger(SimpleCrudRepository.class);
 
   // TODO: 22.03.2020 We must create singleton class letting us to inject EM in different place
+
+  private Provider<EntityManager> em;
+
   @Inject
-  protected Provider<EntityManager> em;
+  public SimpleCrudRepository(Provider<EntityManager> em) {
+    this.em = em;
+  }
 
   protected EntityManager getEntityManager() {
     return em.get();

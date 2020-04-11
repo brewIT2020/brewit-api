@@ -11,5 +11,9 @@ import com.google.inject.Inject;
  */
 public interface UserService {
 
+  void save(User user);
 
+  User findByEmail(String principal);
+
+  User findByUsername(String principal);
 }

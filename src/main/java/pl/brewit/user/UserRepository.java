@@ -12,7 +12,7 @@ import java.util.List;
  * <p>Author : Kamil Szerląg
  */
 // TODO: 22.03.2020
-interface UserRepository extends CrudRepository<User> {
+public interface UserRepository extends CrudRepository<User> {
 
   List<User> findAll();
 
