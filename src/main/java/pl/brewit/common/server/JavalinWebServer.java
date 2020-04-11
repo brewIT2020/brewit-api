@@ -1,9 +1,18 @@
 package pl.brewit.common.server;
 
+import com.google.inject.Inject;
+import com.google.inject.Injector;
+import com.google.inject.persist.PersistFilter;
 import io.javalin.Javalin;
-import io.javalin.http.Context;
-import io.javalin.http.Handler;
-import org.jetbrains.annotations.NotNull;
+import org.eclipse.jetty.servlet.FilterHolder;
+import pl.brewit.user.auth.AuthenticationManager;
+import pl.brewit.user.auth.filter.JWTAuthenticationFilter;
+import pl.brewit.user.auth.filter.JWTAuthorizationFilter;
+
+import java.util.EnumSet;
+
+import static java.util.EnumSet.of;
+import static javax.servlet.DispatcherType.REQUEST;
 
 /**
  * Project: brewit-api
@@ -14,21 +23,32 @@ import org.jetbrains.annotations.NotNull;
  */
 public final class JavalinWebServer {
 
-  public void run() {
+  private AuthenticationManager authenticationManager;
 
+  @Inject
+  public JavalinWebServer(AuthenticationManager authenticationManager) {
+    this.authenticationManager = authenticationManager;
   }
 
-  public void start() {
-    Javalin app = Javalin.create().start(7000);
-    app.get("/", ctx -> ctx.result("Hello World"));
-
-    app.before("/", ctx -> {
-      ctx.
-    });
-
-    app.config.server(() -> {
-
-    })
+  public Javalin app(final Injector injector) {
+    return Javalin.create(
+            config -> {
+              config.configureServletContextHandler(
+                      servletContextHandler -> {
+                        servletContextHandler.addFilter(
+                                new FilterHolder(injector.getInstance(PersistFilter.class)),
+                                "/",
+                                of(REQUEST)
+                        );
+                        servletContextHandler.addFilter(
+                                JWTAuthenticationFilter.class,
+                                "/",
+                                of(REQUEST));
+                        servletContextHandler.addFilter(
+                                JWTAuthorizationFilter.class,
+                                "/",
+                                of(REQUEST));
+                      });
+            });
   }
-
 }

@@ -1,5 +1,6 @@
 package pl.brewit.common.repository;
 
+import com.google.inject.Singleton;
 import com.google.inject.persist.PersistService;
 
 import javax.inject.Inject;
@@ -11,6 +12,7 @@ import javax.inject.Inject;
  *
  * Author    : Kamil Szerląg
  */
+@Singleton
 public class JpaInitializer {
 
   @Inject

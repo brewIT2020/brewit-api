@@ -1,5 +1,9 @@
 package pl.brewit.user;
 
+import com.google.inject.Singleton;
+
+import java.util.List;
+
 /**
  * Project: brewit-api
  *
@@ -7,8 +11,13 @@ package pl.brewit.user;
  *
  * Author    : Kamil Szerląg
  */
-public class UserFacade {
+public interface UserFacade {
 
+  boolean register(UserDto userDto);
 
+  UserDto getUser(String userId);
 
+  List<UserDto> getAllUsers();
+
+  void updateEmail(UserDto userDto);
 }

@@ -1,8 +1,7 @@
 package pl.brewit.user;
 
 import com.google.inject.Inject;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.validator.routines.EmailValidator;
+import pl.brewit.user.auth.crypt.PasswordEncryptor;
 
 /**
  * Project: brewit-api
@@ -11,7 +10,7 @@ import org.apache.commons.validator.routines.EmailValidator;
  *
  * <p>Author : Kamil Szerląg
  */
-public class UserServiceImpl {
+public class UserServiceImpl implements UserService {
 
   private UserRepository userRepository;
 
@@ -20,24 +19,24 @@ public class UserServiceImpl {
     this.userRepository = userRepository;
   }
 
-  void save(User user) {
+  @Override
+  public void save(User user) {
     encryptPassword(user);
     userRepository.save(user);
+  }
+
+  @Override
+  public User findByEmail(String principal) {
+    return userRepository.findByEmail(principal);
+  }
+
+  @Override
+  public User findByUsername(String principal) {
+    return userRepository.findByUsername(principal);
   }
 
   private void encryptPassword(User user) {
     String encryptedPassword = PasswordEncryptor.encryptPassword(user.getPassword());
     user.setPassword(encryptedPassword);
-  }
-
-  boolean authenticate(String login, String password) {
-    User user = null;
-    if (StringUtils.isNotBlank(login) && StringUtils.isNotBlank(password)) {
-      user = EmailValidator.getInstance().isValid(login)
-              ? userRepository.findByEmail(login)
-              : userRepository.findByUsername(login);
-      return PasswordEncryptor.verifyPassword(user.getPassword(), password);
-    }
-    return false;
   }
 }

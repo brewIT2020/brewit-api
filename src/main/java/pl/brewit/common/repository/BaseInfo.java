@@ -5,6 +5,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import java.time.LocalDateTime;
 
 /**
@@ -28,16 +30,16 @@ public class BaseInfo {
   @UpdateTimestamp
   private LocalDateTime updatedDate;
 
-  public LocalDateTime getCreatedDate() {
-    return createdDate;
-  }
-
   public Boolean getActive() {
     return active;
   }
 
   public void setActive(Boolean active) {
     this.active = active;
+  }
+
+  public LocalDateTime getCreatedDate() {
+    return createdDate;
   }
 
   public void setCreatedDate(LocalDateTime createdDate) {

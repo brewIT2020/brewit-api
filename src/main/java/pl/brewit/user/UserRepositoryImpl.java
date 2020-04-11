@@ -1,7 +1,10 @@
 package pl.brewit.user;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
 import pl.brewit.common.repository.SimpleCrudRepository;
 
+import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.ParameterExpression;
@@ -18,6 +21,11 @@ import java.util.List;
  */
 // TODO: 22.03.20
 class UserRepositoryImpl extends SimpleCrudRepository<User> implements UserRepository {
+
+  @Inject
+  public UserRepositoryImpl(Provider<EntityManager> em) {
+    super(em);
+  }
 
   @Transactional
   @Override
