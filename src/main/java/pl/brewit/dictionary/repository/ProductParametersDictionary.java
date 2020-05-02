@@ -7,7 +7,8 @@ import pl.brewit.common.repository.BaseEntity;
 
 import java.util.Set;
 
-@Entity(name = "productParametersDictionary")
+@Entity
+@Table(name = "product_parameters", schema = "\"dictionaries\"")
 public class ProductParametersDictionary extends BaseEntity {
 
     @Column(name = "parameterName", nullable = false, updatable = false)

@@ -8,7 +8,8 @@ import pl.brewit.common.repository.BaseEntity;
 import pl.brewit.dictionary.repository.BrewingToolsDictionary;
 
 //DAO
-@Entity(name = "brew")
+@Entity
+@Table(name = "brew", schema = "\"brews\"")
 public class Brew extends BaseEntity {
 
     @Column(name = "brewDate", nullable = false)

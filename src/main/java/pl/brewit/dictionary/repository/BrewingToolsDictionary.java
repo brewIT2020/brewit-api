@@ -6,7 +6,8 @@ import pl.brewit.common.repository.BaseEntity;
 import javax.persistence.*;
 import java.util.Set;
 
-@Entity(name = "brewingToolsDictionary")
+@Entity
+@Table(name = "brewing_tools", schema = "\"dictionaries\"")
 public class BrewingToolsDictionary extends BaseEntity {
 
     @Column(name = "name", nullable = false, updatable = false)

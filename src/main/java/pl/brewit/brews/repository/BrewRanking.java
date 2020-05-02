@@ -3,7 +3,8 @@ package pl.brewit.brews.repository;
 import javax.persistence.*;
 import pl.brewit.common.repository.BaseEntity;
 
-@Entity(name = "brewRanking")
+@Entity
+@Table(name = "ranking", schema = "\"brews\"")
 public class BrewRanking extends BaseEntity {
 
     @Column(name = "rankingValue", nullable = false)
