@@ -7,7 +7,8 @@ import pl.brewit.dictionary.repository.ProductTypesDictionary;
 import javax.persistence.*;
 import java.util.Set;
 
-@Entity(name = "product")
+@Entity
+@Table(name = "product", schema = "\"brews\"")
 public class Product extends BaseEntity {
 
     @Column(name = "productName")
