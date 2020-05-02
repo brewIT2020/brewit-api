@@ -1,12 +1,13 @@
 package pl.brewit.brews.repository;
 
+import pl.brewit.common.repository.BaseEntity;
 import pl.brewit.dictionary.repository.ProductParametersDictionary;
 import pl.brewit.dictionary.repository.ProductTypesDictionary;
 
 import javax.persistence.*;
 
 @Entity(name = "productParameter")
-public class ProductParameter {
+public class ProductParameter extends BaseEntity {
 
     @Column(name = "parameterValue")
     private String parameterValue;
