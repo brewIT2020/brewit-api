@@ -2,7 +2,7 @@ package pl.brewit.dictionary.repository;
 
 import javax.persistence.*;
 
-import pl.brewit.brews.repository.ProductParameter;
+import pl.brewit.brews.repository.dao.ProductParameter;
 import pl.brewit.common.repository.BaseEntity;
 
 import java.util.Set;
@@ -11,14 +11,14 @@ import java.util.Set;
 @Table(name = "product_parameters", schema = "\"dictionaries\"")
 public class ProductParametersDictionary extends BaseEntity {
 
-    @Column(name = "parameterName", nullable = false, updatable = false)
+    @Column(name = "parameter_name", nullable = false, updatable = false)
     private String parameterName;
 
     @ManyToOne
+    @JoinColumn(name = "product_type_id")
     private ProductTypesDictionary productType;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "productParametersDictionaryId")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "parameter")
     private Set<ProductParameter> productParameters;
 
     public String getParameterName() { return parameterName; }

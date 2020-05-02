@@ -1,7 +1,7 @@
 package pl.brewit.dictionary.repository;
 
-import pl.brewit.brews.repository.Product;
-import pl.brewit.brews.repository.ProductParameter;
+import pl.brewit.brews.repository.dao.Product;
+import pl.brewit.brews.repository.dao.ProductParameter;
 import pl.brewit.common.repository.BaseEntity;
 
 import javax.persistence.*;
@@ -11,19 +11,16 @@ import java.util.Set;
 @Table(name = "product_types", schema = "\"dictionaries\"")
 public class ProductTypesDictionary extends BaseEntity {
 
-    @Column(name = "typeName", nullable = false)
+    @Column(name = "type_name", nullable = false)
     private String typeName;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "productTypesDictionaryId")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "productType")
     private Set<ProductParameter> productParameters;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "productTypesDictionaryId")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "productType")
     private Set<Product> products;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "productTypesDictionaryId")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "productType")
     private Set<BrewingToolsDictionary> brewingTools;
 
     public String getTypeName() { return typeName; }

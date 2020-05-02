@@ -1,6 +1,6 @@
 package pl.brewit.dictionary.repository;
 
-import pl.brewit.brews.repository.Brew;
+import pl.brewit.brews.repository.dao.Brew;
 import pl.brewit.common.repository.BaseEntity;
 
 import javax.persistence.*;
@@ -14,10 +14,10 @@ public class BrewingToolsDictionary extends BaseEntity {
     private String name;
 
     @ManyToOne
+    @JoinColumn(name = "product_type_id")
     private ProductTypesDictionary productType;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "brewingToolsDictionaryId")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "brewingTool")
     private Set<Brew> brews;
 
     public String getName() { return name; }

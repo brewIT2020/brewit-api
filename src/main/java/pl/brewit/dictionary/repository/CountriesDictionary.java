@@ -1,6 +1,6 @@
 package pl.brewit.dictionary.repository;
 
-import pl.brewit.brews.repository.Product;
+import pl.brewit.brews.repository.dao.Product;
 import pl.brewit.common.repository.BaseEntity;
 
 import javax.persistence.*;
@@ -16,8 +16,7 @@ public class CountriesDictionary extends BaseEntity {
     @Column(name = "code", nullable = false)
     private String code;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "countriesDictionaryId")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "country")
     private Set<Product> products;
 
     public String getName() { return name; }

@@ -1,4 +1,4 @@
-package pl.brewit.brews.repository;
+package pl.brewit.brews.repository.dao;
 
 import java.time.LocalDate;
 import java.util.Set;
@@ -12,24 +12,25 @@ import pl.brewit.dictionary.repository.BrewingToolsDictionary;
 @Table(name = "brew", schema = "\"brews\"")
 public class Brew extends BaseEntity {
 
-    @Column(name = "brewDate", nullable = false)
+    @Column(name = "brew_date", nullable = false)
     private LocalDate brewDate;
 
-    @Column(name = "isPublic", nullable = false)
+    @Column(name = "is_public", nullable = false)
     private boolean isPublic;
 
     // TBD : Brew - User | Many - One
-    @Column(name = "userId")
+    @Column(name = "user_id")
     private int userId;
 
     @ManyToOne
+    @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
     @ManyToOne
+    @JoinColumn(name = "brewing_tool_id")
     private BrewingToolsDictionary brewingTool;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "brewId", nullable = false)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "brew")
     private Set<BrewRanking> rankings;
 
     public boolean getIsPublic() { return isPublic; }

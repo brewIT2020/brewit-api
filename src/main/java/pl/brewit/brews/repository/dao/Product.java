@@ -1,4 +1,4 @@
-package pl.brewit.brews.repository;
+package pl.brewit.brews.repository.dao;
 
 import pl.brewit.common.repository.BaseEntity;
 import pl.brewit.dictionary.repository.CountriesDictionary;
@@ -11,22 +11,19 @@ import java.util.Set;
 @Table(name = "product", schema = "\"brews\"")
 public class Product extends BaseEntity {
 
-    @Column(name = "productName")
+    @Column(name = "product_name")
     private String productName;
 
     @ManyToOne
+    @JoinColumn(name = "country_id")
     private CountriesDictionary country;
 
     @ManyToOne
+    @JoinColumn(name = "product_type_id")
     private ProductTypesDictionary productType;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "productId", nullable = false)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "product")
     private Set<Brew> brews;
-
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "productId")
-    private Set<ProductParameter> productParameters;
 
     public String getProductName() { return productName; }
     public void setProductName(String productName) { this.productName = productName; }
@@ -39,7 +36,4 @@ public class Product extends BaseEntity {
 
     public Set<Brew> getBrews() { return brews; }
     private void setBrews(Set<Brew> brews) { this.brews = brews; }
-
-    public Set<ProductParameter> getProductParameters() { return productParameters; }
-    public void setProductParameters(Set<ProductParameter> products) { this.productParameters = products; }
 }
