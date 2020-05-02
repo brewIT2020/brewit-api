@@ -2,10 +2,10 @@ package pl.brewit.user.auth;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
-import com.google.inject.servlet.RequestScoped;
-import pl.brewit.user.auth.AuthenticationManager;
-import pl.brewit.user.auth.JWTAuthenticationManager;
 import pl.brewit.user.auth.filter.JWTAuthorizationFilter;
+import pl.brewit.user.auth.pac4jauth.BasicUsernamePasswordAuthenticator;
+import pl.brewit.user.auth.pac4jauth.RequestMatcher;
+import pl.brewit.user.auth.pac4jauth.SecurityConfig;
 
 /**
  * Project: brewit-api
@@ -18,8 +18,9 @@ public class AuthModule extends AbstractModule {
 
   @Override
   protected void configure() {
-    bind(AuthenticationManager.class).to(JWTAuthenticationManager.class).in(Singleton.class);
-    bind(JWTAuthenticationManager.class);
     bind(JWTAuthorizationFilter.class);
+    bind(RequestMatcher.class).in(Singleton.class);
+    bind(BasicUsernamePasswordAuthenticator.class).in(Singleton.class);
+    bind(SecurityConfig.class).in(Singleton.class);
   }
 }

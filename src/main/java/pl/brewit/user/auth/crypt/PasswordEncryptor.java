@@ -2,6 +2,8 @@ package pl.brewit.user.auth.crypt;
 
 import de.mkammerer.argon2.Argon2;
 import de.mkammerer.argon2.Argon2Factory;
+import org.mindrot.jbcrypt.BCrypt;
+import org.pac4j.core.credentials.password.JBCryptPasswordEncoder;
 
 import static de.mkammerer.argon2.Argon2Factory.Argon2Types;
 
@@ -14,15 +16,13 @@ import static de.mkammerer.argon2.Argon2Factory.Argon2Types;
  */
 public class PasswordEncryptor {
 
-  private static final Argon2 argon2 = Argon2Factory.create(Argon2Types.ARGON2i);
-
+  private static final JBCryptPasswordEncoder jbCryptPasswordEncoder = new JBCryptPasswordEncoder(BCrypt.gensalt(10));
   public static String encryptPassword(String password) {
-    String hash = argon2.hash(4, 1024 * 1024, 4, password);
-    return hash;
+    return jbCryptPasswordEncoder.encode(password);
+
   }
 
-  public static boolean verifyPassword(String hash, String password) {
-    Argon2 argon2 = Argon2Factory.create(Argon2Types.ARGON2i);
-    return argon2.verify(hash, password);
+  public static boolean verifyPassword(String password, String hash) {
+    return jbCryptPasswordEncoder.matches(password, hash);
   }
 }

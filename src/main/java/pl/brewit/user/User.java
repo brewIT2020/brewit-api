@@ -29,9 +29,10 @@ public class User extends BaseEntity {
   @NotBlank
   private String password;
 
+  // TODO: 4/22/20 Add Roles
   @Column(name = "role", updatable = true, nullable = false)
   @Enumerated(EnumType.STRING)
-  private UserRole userRole;
+  private AuthorizationRole authorizationRole;
 
   public String getUsername() {
     return username;
@@ -55,6 +56,14 @@ public class User extends BaseEntity {
 
   public void setPassword(String password) {
     this.password = password;
+  }
+
+  public AuthorizationRole getAuthorizationRole() {
+    return authorizationRole;
+  }
+
+  public void setAuthorizationRole(AuthorizationRole authorizationRole) {
+    this.authorizationRole = authorizationRole;
   }
 
   @Override

@@ -2,6 +2,7 @@ package pl.brewit.user;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import com.google.inject.persist.Transactional;
 import pl.brewit.common.repository.SimpleCrudRepository;
 
 import javax.persistence.EntityManager;
@@ -9,7 +10,6 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.ParameterExpression;
 import javax.persistence.criteria.Root;
-import javax.transaction.Transactional;
 import java.util.List;
 
 /**
@@ -27,7 +27,6 @@ class UserRepositoryImpl extends SimpleCrudRepository<User> implements UserRepos
     super(em);
   }
 
-  @Transactional
   @Override
   public List<User> findAll() {
     CriteriaQuery<User> q = getCriteriaBuilderForUser().createQuery(User.class);
@@ -37,13 +36,11 @@ class UserRepositoryImpl extends SimpleCrudRepository<User> implements UserRepos
     return query.getResultList();
   }
 
-  @Transactional
   @Override
   public User findByUsername(String username) {
     return getUsersByColumn(username, "username");
   }
 
-  @Transactional
   @Override
   public User findByEmail(String email) {
     return getUsersByColumn(email, "email");
