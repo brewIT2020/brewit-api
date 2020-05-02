@@ -1,10 +1,9 @@
-package pl.brewit.brews.domain;
+package pl.brewit.brews.repository;
 
-import pl.brewit.dictionary.domain.ProductParametersDictionary;
-import pl.brewit.dictionary.domain.ProductTypesDictionary;
+import pl.brewit.dictionary.repository.ProductParametersDictionary;
+import pl.brewit.dictionary.repository.ProductTypesDictionary;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Entity(name = "productParameter")
 public class ProductParameter {

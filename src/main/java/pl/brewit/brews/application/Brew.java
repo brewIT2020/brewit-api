@@ -1,4 +1,5 @@
 package pl.brewit.brews.application;
 
-public interface Brew {
+//DTO gotowe do wyjścia z API
+public class Brew {
 }

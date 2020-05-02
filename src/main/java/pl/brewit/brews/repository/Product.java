@@ -1,8 +1,8 @@
-package pl.brewit.brews.domain;
+package pl.brewit.brews.repository;
 
 import pl.brewit.common.repository.BaseEntity;
-import pl.brewit.dictionary.domain.CountriesDictionary;
-import pl.brewit.dictionary.domain.ProductTypesDictionary;
+import pl.brewit.dictionary.repository.CountriesDictionary;
+import pl.brewit.dictionary.repository.ProductTypesDictionary;
 
 import javax.persistence.*;
 import java.util.Set;

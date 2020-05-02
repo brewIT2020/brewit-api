@@ -1,4 +1,4 @@
 package pl.brewit.brews.application;
 
-public class BrewFacade {
+public interface BrewFacade {
 }

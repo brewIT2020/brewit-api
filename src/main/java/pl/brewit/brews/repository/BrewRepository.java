@@ -1,4 +1,4 @@
 package pl.brewit.brews.repository;
 
-public class BrewRepository {
+public interface BrewRepository {
 }
