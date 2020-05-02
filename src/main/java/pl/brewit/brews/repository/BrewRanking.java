@@ -1,4 +1,4 @@
-package pl.brewit.brews.domain;
+package pl.brewit.brews.repository;
 
 import javax.persistence.*;
 import pl.brewit.common.repository.BaseEntity;

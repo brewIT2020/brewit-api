@@ -1,7 +1,6 @@
-package pl.brewit.dictionary.domain;
+package pl.brewit.dictionary.repository;
 
-import pl.brewit.brews.domain.BrewRanking;
-import pl.brewit.brews.domain.Product;
+import pl.brewit.brews.repository.Product;
 import pl.brewit.common.repository.BaseEntity;
 
 import javax.persistence.*;
