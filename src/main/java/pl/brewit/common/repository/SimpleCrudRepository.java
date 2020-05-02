@@ -43,14 +43,11 @@ public class SimpleCrudRepository<T> implements CrudRepository<T> {
 
   @Override
   public void save(T object) {
-    getEntityManager().getTransaction().begin();
     try {
       getEntityManager().persist(object);
     } catch (PersistenceException e) {
       LOGGER.warn("Object with class {} can't be persisted", object.getClass().getName(), e);
       getEntityManager().getTransaction().rollback();
-    } finally {
-      getEntityManager().close();
     }
   }
 

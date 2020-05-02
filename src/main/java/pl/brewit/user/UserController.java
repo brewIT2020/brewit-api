@@ -4,7 +4,10 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import io.javalin.Javalin;
 import io.javalin.apibuilder.EndpointGroup;
+import io.javalin.http.Context;
 import io.javalin.http.Handler;
+import io.javalin.plugin.json.JavalinJackson;
+import io.javalin.plugin.json.JavalinJson;
 
 import java.util.List;
 
@@ -32,7 +35,7 @@ public class UserController {
 
   public EndpointGroup endpoints() {
     return () -> {
-      post(register);
+      post(this::signUp);
       get(getAllUsers);
       path(
               ":id",
@@ -46,6 +49,12 @@ public class UserController {
 //                        patch(this::updatePassword);
               });
     };
+  }
+
+  private void signUp(Context context) {
+      UserDto userDto = JavalinJson.fromJson(context.body(), UserDto.class);
+      userFacade.register(userDto);
+      context.status(201);
   }
 
   private Handler register =

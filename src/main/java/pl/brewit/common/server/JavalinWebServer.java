@@ -1,15 +1,14 @@
 package pl.brewit.common.server;
 
-import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.persist.PersistFilter;
 import io.javalin.Javalin;
 import org.eclipse.jetty.servlet.FilterHolder;
-import pl.brewit.user.auth.AuthenticationManager;
 import pl.brewit.user.auth.filter.JWTAuthenticationFilter;
 import pl.brewit.user.auth.filter.JWTAuthorizationFilter;
-
-import java.util.EnumSet;
+import pl.brewit.user.auth.pac4jauth.BasicUsernamePasswordAuthenticator;
+import pl.brewit.user.auth.pac4jauth.RequestMatcher;
+import pl.brewit.user.auth.pac4jauth.SecurityConfig;
 
 import static java.util.EnumSet.of;
 import static javax.servlet.DispatcherType.REQUEST;
@@ -23,32 +22,29 @@ import static javax.servlet.DispatcherType.REQUEST;
  */
 public final class JavalinWebServer {
 
-  private AuthenticationManager authenticationManager;
-
-  @Inject
-  public JavalinWebServer(AuthenticationManager authenticationManager) {
-    this.authenticationManager = authenticationManager;
-  }
-
   public Javalin app(final Injector injector) {
     return Javalin.create(
-            config -> {
-              config.configureServletContextHandler(
-                      servletContextHandler -> {
-                        servletContextHandler.addFilter(
-                                new FilterHolder(injector.getInstance(PersistFilter.class)),
-                                "/",
-                                of(REQUEST)
-                        );
-                        servletContextHandler.addFilter(
-                                JWTAuthenticationFilter.class,
-                                "/",
-                                of(REQUEST));
-                        servletContextHandler.addFilter(
-                                JWTAuthorizationFilter.class,
-                                "/",
-                                of(REQUEST));
-                      });
-            });
+        config -> {
+          config.configureServletContextHandler(
+              servletContextHandler -> {
+                servletContextHandler.addFilter(
+                    new FilterHolder(injector.getInstance(PersistFilter.class)), "/*", of(REQUEST));
+                servletContextHandler.addFilter(
+                    new FilterHolder(
+                        new JWTAuthenticationFilter(
+                            injector.getInstance(BasicUsernamePasswordAuthenticator.class),
+                            injector.getInstance(RequestMatcher.class),
+                            injector.getInstance(SecurityConfig.class))),
+                    "/*",
+                    of(REQUEST));
+                servletContextHandler.addFilter(
+                    new FilterHolder(
+                        new JWTAuthorizationFilter(
+                            injector.getInstance(SecurityConfig.class),
+                            injector.getInstance(RequestMatcher.class))),
+                    "/*",
+                    of(REQUEST));
+              });
+        });
   }
 }

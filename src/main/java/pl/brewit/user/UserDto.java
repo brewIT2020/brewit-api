@@ -21,7 +21,12 @@ public class UserDto {
   @Email private String email;
 
   // TODO: 07.04.2020 implement Regex for user password
-  @NotBlank @RegEx private String password;
+  @NotBlank private String password;
+
+  private String mode;
+
+  public UserDto() {
+  }
 
   public UserDto(String username, String email, String password) {
     this.username = username;
@@ -51,5 +56,13 @@ public class UserDto {
 
   public void setPassword(String password) {
     this.password = password;
+  }
+
+  public String getMode() {
+    return mode;
+  }
+
+  public void setMode(String mode) {
+    this.mode = mode;
   }
 }

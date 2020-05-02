@@ -1,6 +1,7 @@
 package pl.brewit.user;
 
 import com.google.inject.Inject;
+import com.google.inject.persist.Transactional;
 import pl.brewit.user.auth.crypt.PasswordEncryptor;
 
 /**
@@ -20,9 +21,15 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
+  @Transactional
   public void save(User user) {
     encryptPassword(user);
     userRepository.save(user);
+  }
+
+  private void encryptPassword(User user) {
+    String encryptedPassword = PasswordEncryptor.encryptPassword(user.getPassword());
+    user.setPassword(encryptedPassword);
   }
 
   @Override
@@ -35,8 +42,5 @@ public class UserServiceImpl implements UserService {
     return userRepository.findByUsername(principal);
   }
 
-  private void encryptPassword(User user) {
-    String encryptedPassword = PasswordEncryptor.encryptPassword(user.getPassword());
-    user.setPassword(encryptedPassword);
-  }
+
 }

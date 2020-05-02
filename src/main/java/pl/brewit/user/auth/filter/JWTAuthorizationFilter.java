@@ -1,27 +1,75 @@
 package pl.brewit.user.auth.filter;
 
+import com.google.inject.Inject;
+import org.pac4j.core.authorization.authorizer.Authorizer;
+import org.pac4j.core.authorization.authorizer.IsAuthenticatedAuthorizer;
+import org.pac4j.core.authorization.authorizer.IsFullyAuthenticatedAuthorizer;
+import org.pac4j.core.context.DefaultAuthorizers;
+import org.pac4j.core.context.HttpConstants;
+import org.pac4j.core.context.J2EContext;
+import org.pac4j.core.credentials.TokenCredentials;
+import org.pac4j.core.engine.DefaultSecurityLogic;
+import org.pac4j.core.profile.CommonProfile;
+import org.pac4j.jwt.credentials.authenticator.JwtAuthenticator;
+import pl.brewit.user.auth.pac4jauth.RequestMatcher;
+import pl.brewit.user.auth.pac4jauth.SecurityConfig;
+
 import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
  * Project: brewit-api
  *
- * Created on: 07.04.2020
+ * <p>Created on: 07.04.2020
  *
- * Author    : Kamil Szerląg
+ * <p>Author : Kamil Szerląg
  */
 public class JWTAuthorizationFilter implements Filter {
-  @Override
-  public void init(FilterConfig filterConfig) throws ServletException {
+
+  private SecurityConfig securityConfig;
+
+  private RequestMatcher requestMatcher;
+
+  @Inject
+  public JWTAuthorizationFilter(SecurityConfig securityConfig, RequestMatcher requestMatcher) {
+    this.securityConfig = securityConfig;
+    this.requestMatcher = requestMatcher;
   }
 
   @Override
-  public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-
-  }
+  public void init(FilterConfig filterConfig) throws ServletException {}
 
   @Override
-  public void destroy() {
+  public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+      throws IOException, ServletException {
+    JwtAuthenticator jwtAuthenticator = securityConfig.getJwtAuthenticator();
+    J2EContext context = new J2EContext((HttpServletRequest) request, (HttpServletResponse) response);
+
+    String authHeader = ((HttpServletRequest) request).getHeader(HttpConstants.AUTHORIZATION_HEADER);
+    if (requestMatcher.requiresAuthentication(context)) {
+      chain.doFilter(request, response);
+      return;
+    }
+
+    CommonProfile commonProfile = jwtAuthenticator.validateToken(authHeader.replace(HttpConstants.BEARER_HEADER_PREFIX, ""));
+
+    if (requestMatcher.requiresAuthentication(context)) {
+      if (!IsAuthenticatedAuthorizer.isAuthenticated().isProfileAuthorized(context, commonProfile)) {
+        ((HttpServletResponse) response).sendError(HttpServletResponse.SC_UNAUTHORIZED);
+      }
+    }
+
+    chain.doFilter(request, response);
+    return;
+  }
+
+  private void authorize(CommonProfile profile) {
 
   }
+
+
+  @Override
+  public void destroy() {}
 }

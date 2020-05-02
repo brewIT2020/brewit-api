@@ -1,7 +1,5 @@
 package pl.brewit.user;
 
-import io.javalin.core.security.Role;
-
 /**
  * Project: brewit-api
  *
@@ -9,6 +7,6 @@ import io.javalin.core.security.Role;
  *
  * Author    : Kamil Szerląg
  */
-public enum UserRole implements Role {
-   UNKNOWN, USER, ADMIN
+public enum AuthorizationRole {
+   ANONYMOUS, BASIC, GOD
 }

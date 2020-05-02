@@ -5,7 +5,7 @@ import pl.brewit.common.repository.BaseEntity;
 
 import javax.persistence.*;
 
-@Entity(name = "productParametersDictionary")
+@Entity(name = "brewingToolsParametersDictionary")
 public class BrewingToolsModel extends BaseEntity {
 
     @Column(name = "name", nullable = false, updatable = false)
