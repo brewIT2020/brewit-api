@@ -15,15 +15,14 @@ public class Product extends BaseEntity {
     private String productName;
 
     @ManyToOne
-    @JoinColumn(name = "country_id")
+    @JoinColumn(name = "country_id",
+            foreignKey = @javax.persistence.ForeignKey(name = "fk_product_country"))
     private CountriesDictionary country;
 
     @ManyToOne
-    @JoinColumn(name = "product_type_id")
+    @JoinColumn(name = "product_type_id", nullable = false,
+            foreignKey = @javax.persistence.ForeignKey(name = "fk_product_product_type"))
     private ProductTypesDictionary productType;
-
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "product")
-    private Set<Brew> brews;
 
     public String getProductName() { return productName; }
     public void setProductName(String productName) { this.productName = productName; }
@@ -33,7 +32,4 @@ public class Product extends BaseEntity {
 
     public ProductTypesDictionary getProductType() { return productType; }
     public void setProductType(ProductTypesDictionary productType) { this.productType = productType; }
-
-    public Set<Brew> getBrews() { return brews; }
-    private void setBrews(Set<Brew> brews) { this.brews = brews; }
 }

@@ -15,11 +15,13 @@ public class ProductParameter extends BaseEntity {
     private String parameterValue;
 
     @ManyToOne
-    @JoinColumn(name = "product_type_id")
+    @JoinColumn(name = "product_type_id", nullable = false,
+            foreignKey = @javax.persistence.ForeignKey(name = "fk_product_parameter_product_type"))
     private ProductTypesDictionary productType;
 
     @ManyToOne
-    @JoinColumn(name = "parameter_id")
+    @JoinColumn(name = "parameter_id", nullable = false,
+            foreignKey = @javax.persistence.ForeignKey(name = "fk_product_parameter_parameter"))
     private ProductParametersDictionary parameter;
 
     public String getParameterValue() { return parameterValue; }
