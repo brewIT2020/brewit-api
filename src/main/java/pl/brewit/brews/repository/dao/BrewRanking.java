@@ -16,10 +16,23 @@ public class BrewRanking extends BaseEntity {
     @Column(name = "comment", length = 25500)
     private String comment;
 
-    public byte getRankingValue() { return rankingValue; }
-    public void setRankingValue(byte rankingValue) { this.rankingValue = rankingValue; }
+    public BrewRanking(byte rankingValue, String comment) {
+        this.rankingValue = rankingValue;
+        this.comment = comment;
+    }
 
-    public String getComment() { return comment; }
+    public byte getRankingValue() {
+        return rankingValue;
+    }
+
+    public void setRankingValue(byte rankingValue) {
+        this.rankingValue = rankingValue;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
     public void setComment(String comment) {
         this.comment = comment;
     }
