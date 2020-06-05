@@ -1,5 +1,7 @@
 package pl.brewit.dictionary.repository;
 
+import org.hibernate.annotations.Cascade;
+import pl.brewit.brews.repository.dao.BrewRanking;
 import pl.brewit.brews.repository.dao.Product;
 import pl.brewit.brews.repository.dao.ProductParameter;
 import pl.brewit.common.repository.BaseEntity;
@@ -12,26 +14,47 @@ import java.util.Set;
 public class ProductTypesDictionary extends BaseEntity {
 
     @Column(name = "type_name", nullable = false)
-    private String typeName;
+    private String name;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "productType")
-    private Set<ProductParameter> productParameters;
+    @OneToMany
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+    @JoinColumn(name = "product_type_id",
+            foreignKey = @javax.persistence.ForeignKey(name = "fk_product_parameters_product_type"))
+    private Set<ProductParametersDictionary> productParametersDictionaries;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "productType")
-    private Set<Product> products;
+    @OneToMany
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+    @JoinColumn(name = "product_type_id",
+            foreignKey = @javax.persistence.ForeignKey(name = "fk_brewing_tools_product_type"))
+    private Set<BrewingToolsDictionary> brewingToolsDictionaries;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "productType")
-    private Set<BrewingToolsDictionary> brewingTools;
+    public ProductTypesDictionary(String name, Set<ProductParametersDictionary> productParametersDictionaries, Set<BrewingToolsDictionary> brewingToolsDictionaries) {
+        this.name = name;
+        this.productParametersDictionaries = productParametersDictionaries;
+        this.brewingToolsDictionaries = brewingToolsDictionaries;
+    }
 
-    public String getTypeName() { return typeName; }
-    public void setTypeName(String typeName) { this.typeName = typeName; }
+    public String getName() {
+        return name;
+    }
 
-    public Set<ProductParameter> getProductParameters() { return productParameters; }
-    private void setProductParameters(Set<ProductParameter> productParameters) { this.productParameters = productParameters; }
+    public void setName(String typeName) {
+        this.name = typeName;
+    }
 
-    public Set<Product> getProducts() { return products; }
-    private void setProducts(Set<Product> products) { this.products = products; }
+    public Set<ProductParametersDictionary> getProductParametersDictionaries() {
+        return productParametersDictionaries;
+    }
 
-    public Set<BrewingToolsDictionary> getBrewingTools() { return brewingTools; }
-    private void setBrewingTools(Set<BrewingToolsDictionary> brewingTools) { this.brewingTools = brewingTools; }
+    public void setProductParametersDictionaries(Set<ProductParametersDictionary> productParametersDictionaries) {
+        this.productParametersDictionaries = productParametersDictionaries;
+    }
+
+    public Set<BrewingToolsDictionary> getBrewingToolsDictionaries() {
+        return brewingToolsDictionaries;
+    }
+
+    public void setBrewingToolsDictionaries(Set<BrewingToolsDictionary> brewingToolsDictionaries) {
+        this.brewingToolsDictionaries = brewingToolsDictionaries;
+    }
 }

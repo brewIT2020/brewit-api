@@ -1,5 +1,6 @@
 package pl.brewit.brews.repository.dao;
 
+import org.hibernate.annotations.Cascade;
 import pl.brewit.common.repository.BaseEntity;
 import pl.brewit.dictionary.repository.CountriesDictionary;
 import pl.brewit.dictionary.repository.ProductTypesDictionary;
@@ -14,26 +15,70 @@ public class Product extends BaseEntity {
     @Column(name = "product_name")
     private String productName;
 
+    @Column(name = "is_template")
+    private boolean isTemplate;
+
     @ManyToOne
-    @JoinColumn(name = "country_id")
+    @JoinColumn(name = "country_id",
+            foreignKey = @javax.persistence.ForeignKey(name = "fk_products_country"))
     private CountriesDictionary country;
 
     @ManyToOne
-    @JoinColumn(name = "product_type_id")
+    @JoinColumn(name = "product_type_id", nullable = false,
+            foreignKey = @javax.persistence.ForeignKey(name = "fk_products_product_type"))
     private ProductTypesDictionary productType;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "product")
-    private Set<Brew> brews;
+    @OneToMany
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+    @JoinColumn(name = "product_id",
+            foreignKey = @javax.persistence.ForeignKey(name = "fk_product_parameters_product"))
+    private Set<ProductParameter> productParameterValues;
 
-    public String getProductName() { return productName; }
-    public void setProductName(String productName) { this.productName = productName; }
+    public Product(String productName, boolean isTemplate, CountriesDictionary country, ProductTypesDictionary productType, Set<ProductParameter> productParameterValues) {
+        this.productName = productName;
+        this.isTemplate = isTemplate;
+        this.country = country;
+        this.productType = productType;
+        this.productParameterValues = productParameterValues;
+    }
 
-    public CountriesDictionary getCountry() { return country; }
-    public void setCountry(CountriesDictionary country) { this.country = country; }
+    public boolean isTemplate() {
+        return isTemplate;
+    }
 
-    public ProductTypesDictionary getProductType() { return productType; }
-    public void setProductType(ProductTypesDictionary productType) { this.productType = productType; }
+    public void setTemplate(boolean template) {
+        isTemplate = template;
+    }
 
-    public Set<Brew> getBrews() { return brews; }
-    private void setBrews(Set<Brew> brews) { this.brews = brews; }
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public CountriesDictionary getCountry() {
+        return country;
+    }
+
+    public void setCountry(CountriesDictionary country) {
+        this.country = country;
+    }
+
+    public ProductTypesDictionary getProductType() {
+        return productType;
+    }
+
+    public void setProductType(ProductTypesDictionary productType) {
+        this.productType = productType;
+    }
+
+    public Set<ProductParameter> getProductParameterValues() {
+        return productParameterValues;
+    }
+
+    public void setProductParameterValues(Set<ProductParameter> productParameterValues) {
+        this.productParameterValues = productParameterValues;
+    }
 }

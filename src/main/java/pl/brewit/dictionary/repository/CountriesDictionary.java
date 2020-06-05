@@ -16,15 +16,24 @@ public class CountriesDictionary extends BaseEntity {
     @Column(name = "code", nullable = false)
     private String code;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "country")
-    private Set<Product> products;
+    public CountriesDictionary(String name, String code) {
+        this.name = name;
+        this.code = code;
+    }
 
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
+    public String getName() {
+        return name;
+    }
 
-    public String getCode() { return code; }
-    public void setCode(String code) { this.code = code; }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-    public Set<Product> getProducts() { return products; }
-    private void setProducts(Set<Product> products) { this.products = products; }
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
 }
