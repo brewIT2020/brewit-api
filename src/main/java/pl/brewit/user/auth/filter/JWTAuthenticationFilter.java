@@ -36,85 +36,89 @@ import java.util.Set;
  */
 public class JWTAuthenticationFilter implements Filter {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(JWTAuthenticationFilter.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(JWTAuthenticationFilter.class);
 
-  private static final String SECRET_KEY = "JWT_SECRET";
-  private static final String EXPIRATION_TIME = "JWT_EXPIRATION_TIME";
+    private static final String SECRET_KEY = "JWT_SECRET";
+    private static final String EXPIRATION_TIME = "JWT_EXPIRATION_TIME";
 
-  private final BasicUsernamePasswordAuthenticator usernamePasswordAuthenticator;
+    private final BasicUsernamePasswordAuthenticator usernamePasswordAuthenticator;
 
-  private final RequestMatcher requestMatcher;
+    private final RequestMatcher requestMatcher;
 
-  private final SecurityConfig securityConfig;
+    private final SecurityConfig securityConfig;
 
-  @Inject AppProperties properties;
+    @Inject
+    AppProperties properties;
 
-  @Inject
-  public JWTAuthenticationFilter(
-      BasicUsernamePasswordAuthenticator usernamePasswordAuthenticator,
-      RequestMatcher requestMatcher,
-      SecurityConfig securityConfig) {
-    this.usernamePasswordAuthenticator = usernamePasswordAuthenticator;
-    this.requestMatcher = requestMatcher;
-    this.securityConfig = securityConfig;
-  }
-
-  @Override
-  public void init(FilterConfig filterConfig) throws ServletException {}
-
-  @Override
-  public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-      throws IOException, ServletException {
-    requestMatcher.getHeaderMatcher().setHeaderName(HttpConstants.AUTHORIZATION_HEADER);
-    requestMatcher.getPathMatcher().setExcludedPath("/login");
-    requestMatcher.getMethodMatcher().setMethods(Set.of(HttpConstants.HTTP_METHOD.POST));
-
-    WebContext context =
-        new J2EContext((HttpServletRequest) request, (HttpServletResponse) response);
-
-    if (!requestMatcher.requiresAuthentication(context)) {
-      chain.doFilter(request, response);
-      return;
+    @Inject
+    public JWTAuthenticationFilter(
+            BasicUsernamePasswordAuthenticator usernamePasswordAuthenticator,
+            RequestMatcher requestMatcher,
+            SecurityConfig securityConfig) {
+        this.usernamePasswordAuthenticator = usernamePasswordAuthenticator;
+        this.requestMatcher = requestMatcher;
+        this.securityConfig = securityConfig;
     }
 
-    CommonProfile commonProfile = null;
-    try {
-      Reader reader = new InputStreamReader(request.getInputStream());
-      UserDto userDto = new Gson().fromJson(reader, UserDto.class);
-
-      commonProfile =
-          usernamePasswordAuthenticator.validate(
-              new UsernamePasswordCredentials(
-                  userDto.getUsername() != null ? userDto.getUsername() : userDto.getEmail(),
-                  userDto.getPassword()));
-
-    } catch (IOException e) {
-      throw new RuntimeException();
-    } catch (CredentialsException e) {
-      unsuccessfulAuth();
-    } catch (HttpAction e) {
-      // TODO: 4/21/20 Implementation of HttpActionAdapter to handling HttpAction exception
-    } catch (Exception e) {
-      LOGGER.debug(e.getMessage(), e);
-      LOGGER.error(e.getMessage(), e);
+    @Override
+    public void init(FilterConfig filterConfig) throws ServletException {
     }
 
-    successfulAuth(commonProfile, context);
-    chain.doFilter(request, response);
-  }
+    @Override
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+            throws IOException, ServletException {
+        requestMatcher.getHeaderMatcher().setHeaderName(HttpConstants.AUTHORIZATION_HEADER);
+        requestMatcher.getPathMatcher().setExcludedPath("/login");
+        requestMatcher.getMethodMatcher().setMethods(Set.of(HttpConstants.HTTP_METHOD.POST));
 
-  // TODO: 4/21/20 Create JWT token contains required payload.
-  private void successfulAuth(CommonProfile profile, WebContext context) {
-    AuthorizationGenerator<CommonProfile> authorizationGenerator =
-        securityConfig.getAuthorizationGenerator();
-    authorizationGenerator.generate(context, profile);
-    JwtGenerator<CommonProfile> jwtGenerator = securityConfig.getJwtGenerator();
-    String token = jwtGenerator.generate(profile);
-    context.setResponseHeader(HttpConstants.AUTHORIZATION_HEADER, HttpConstants.BEARER_HEADER_PREFIX + token);
-  }
+        WebContext context =
+                new J2EContext((HttpServletRequest) request, (HttpServletResponse) response);
 
-  private void unsuccessfulAuth() {}
+        if (!requestMatcher.requiresAuthentication(context)) {
+            chain.doFilter(request, response);
+            return;
+        }
 
-  @Override
-  public void destroy() {}
+        CommonProfile commonProfile = null;
+        try {
+            Reader reader = new InputStreamReader(request.getInputStream());
+            UserDto userDto = new Gson().fromJson(reader, UserDto.class);
+
+            commonProfile =
+                    usernamePasswordAuthenticator.validate(
+                            new UsernamePasswordCredentials(
+                                    userDto.getUsername() != null ? userDto.getUsername() : userDto.getEmail(),
+                                    userDto.getPassword()));
+
+        } catch (IOException e) {
+            throw new RuntimeException();
+        } catch (CredentialsException e) {
+            unsuccessfulAuth();
+        } catch (HttpAction e) {
+            // TODO: 4/21/20 Implementation of HttpActionAdapter to handling HttpAction exception
+        } catch (Exception e) {
+            LOGGER.debug(e.getMessage(), e);
+            LOGGER.error(e.getMessage(), e);
+        }
+
+        successfulAuth(commonProfile, context);
+        chain.doFilter(request, response);
+    }
+
+    // TODO: 4/21/20 Create JWT token contains required payload.
+    private void successfulAuth(CommonProfile profile, WebContext context) {
+        AuthorizationGenerator<CommonProfile> authorizationGenerator =
+                securityConfig.getAuthorizationGenerator();
+        authorizationGenerator.generate(context, profile);
+        JwtGenerator<CommonProfile> jwtGenerator = securityConfig.getJwtGenerator();
+        String token = jwtGenerator.generate(profile);
+        context.setResponseHeader(HttpConstants.AUTHORIZATION_HEADER, HttpConstants.BEARER_HEADER_PREFIX + token);
+    }
+
+    private void unsuccessfulAuth() {
+    }
+
+    @Override
+    public void destroy() {
+    }
 }

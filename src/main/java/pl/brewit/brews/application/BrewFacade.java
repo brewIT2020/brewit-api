@@ -1,16 +1,16 @@
 package pl.brewit.brews.application;
 
-import pl.brewit.brews.application.dto.BrewDetails;
+import pl.brewit.brews.application.dto.Brew;
 import pl.brewit.brews.application.dto.BrewSimple;
 
-import java.util.Set;
+import java.util.List;
 import java.util.UUID;
 
 public interface BrewFacade {
 
-    Set<BrewSimple> getBrewsSimple(String userId);
-    BrewDetails getBrewDetails(UUID brewId);
-    void insertBrew(BrewDetails brewDetails);
+    List<BrewSimple> getBrewsSimpleForUserSortedByDateDesc(UUID userId, int startIndex, int getAmount);
+    Brew getBrew(UUID brewId);
+    void postBrew(Brew brew);
 }
 
 

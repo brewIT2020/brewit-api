@@ -4,6 +4,8 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.servlet.ServletModule;
 import io.javalin.Javalin;
+import pl.brewit.brews.application.BrewController;
+import pl.brewit.brews.application.BrewModule;
 import pl.brewit.common.repository.RepositoryModule;
 import pl.brewit.common.server.JavalinWebServer;
 import pl.brewit.common.server.WebServerModule;
@@ -15,36 +17,42 @@ import pl.brewit.user.auth.pac4jauth.SecurityConfig;
 
 import static io.javalin.apibuilder.ApiBuilder.path;
 
-/** Hello world! */
+/**
+ * Hello world!
+ */
 public class App {
 
-  private static final String JPA_UNIT_BREWIT = "BrewIT";
+    private static final String JPA_UNIT_BREWIT = "BrewIT";
 
-  public static void main(String[] args) {
-    // Injecting modules for application DI
-    Injector injector =
-        Guice.createInjector(
-            new WebServerModule(),
-            new UtilsModule(),
-            new RepositoryModule(),
-            new ServletModule(),
-            new UserModule(),
-            new AuthModule()
-            // ...
-            );
+    public static void main(String[] args) {
+        // Injecting modules for application DI
+        Injector injector =
+                Guice.createInjector(
+                        new WebServerModule(),
+                        new UtilsModule(),
+                        new RepositoryModule(),
+                        new ServletModule(),
+                        new UserModule(),
+                        new AuthModule(),
+                        new BrewModule()
+                        // ...
+                );
 
-    injector.getInstance(SecurityConfig.class).configure();
+        injector.getInstance(SecurityConfig.class).configure();
 
-    Javalin app =
-        injector
-            .getInstance(JavalinWebServer.class)
-            .app(injector)
-                .post("/login", ctx -> {})
-                .post("/sign-up", ctx -> {})
-            .routes(
-                () -> {
-                  path("users", injector.getInstance(UserController.class).endpoints());
-                })
-            .start(7000);
-  }
+        Javalin app =
+                injector
+                        .getInstance(JavalinWebServer.class)
+                        .app(injector)
+                        .post("/login", ctx -> {
+                        })
+                        .post("/sign-up", ctx -> {
+                        })
+                        .routes(
+                                () -> {
+                                    path("users", injector.getInstance(UserController.class).endpoints());
+                                    path("brews", injector.getInstance(BrewController.class).endpoints());
+                                })
+                        .start(7000);
+    }
 }

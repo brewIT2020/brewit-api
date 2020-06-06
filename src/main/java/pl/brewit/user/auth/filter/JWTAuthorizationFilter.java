@@ -28,48 +28,49 @@ import java.io.IOException;
  */
 public class JWTAuthorizationFilter implements Filter {
 
-  private SecurityConfig securityConfig;
+    private SecurityConfig securityConfig;
 
-  private RequestMatcher requestMatcher;
+    private RequestMatcher requestMatcher;
 
-  @Inject
-  public JWTAuthorizationFilter(SecurityConfig securityConfig, RequestMatcher requestMatcher) {
-    this.securityConfig = securityConfig;
-    this.requestMatcher = requestMatcher;
-  }
-
-  @Override
-  public void init(FilterConfig filterConfig) throws ServletException {}
-
-  @Override
-  public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-      throws IOException, ServletException {
-    JwtAuthenticator jwtAuthenticator = securityConfig.getJwtAuthenticator();
-    J2EContext context = new J2EContext((HttpServletRequest) request, (HttpServletResponse) response);
-
-    String authHeader = ((HttpServletRequest) request).getHeader(HttpConstants.AUTHORIZATION_HEADER);
-    if (requestMatcher.requiresAuthentication(context)) {
-      chain.doFilter(request, response);
-      return;
+    @Inject
+    public JWTAuthorizationFilter(SecurityConfig securityConfig, RequestMatcher requestMatcher) {
+        this.securityConfig = securityConfig;
+        this.requestMatcher = requestMatcher;
     }
 
-    CommonProfile commonProfile = jwtAuthenticator.validateToken(authHeader.replace(HttpConstants.BEARER_HEADER_PREFIX, ""));
-
-    if (requestMatcher.requiresAuthentication(context)) {
-      if (!IsAuthenticatedAuthorizer.isAuthenticated().isProfileAuthorized(context, commonProfile)) {
-        ((HttpServletResponse) response).sendError(HttpServletResponse.SC_UNAUTHORIZED);
-      }
+    @Override
+    public void init(FilterConfig filterConfig) throws ServletException {
     }
 
-    chain.doFilter(request, response);
-    return;
-  }
+    @Override
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+            throws IOException, ServletException {
+        JwtAuthenticator jwtAuthenticator = securityConfig.getJwtAuthenticator();
+        J2EContext context = new J2EContext((HttpServletRequest) request, (HttpServletResponse) response);
 
-  private void authorize(CommonProfile profile) {
+        String authHeader = ((HttpServletRequest) request).getHeader(HttpConstants.AUTHORIZATION_HEADER);
+        if (requestMatcher.requiresAuthentication(context)) {
+            chain.doFilter(request, response);
+            return;
+        }
 
-  }
+        CommonProfile commonProfile = jwtAuthenticator.validateToken(authHeader.replace(HttpConstants.BEARER_HEADER_PREFIX, ""));
+
+        if (requestMatcher.requiresAuthentication(context)) {
+            if (!IsAuthenticatedAuthorizer.isAuthenticated().isProfileAuthorized(context, commonProfile)) {
+                ((HttpServletResponse) response).sendError(HttpServletResponse.SC_UNAUTHORIZED);
+            }
+        }
+
+        chain.doFilter(request, response);
+    }
+
+    private void authorize(CommonProfile profile) {
+
+    }
 
 
-  @Override
-  public void destroy() {}
+    @Override
+    public void destroy() {
+    }
 }

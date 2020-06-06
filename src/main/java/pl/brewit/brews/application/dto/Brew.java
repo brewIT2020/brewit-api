@@ -16,7 +16,7 @@ import java.time.LocalDate;
 import java.util.Set;
 import java.util.UUID;
 
-public class BrewDetails {
+public class Brew {
 
     private UUID id;
     @Past private LocalDate brewDate;
@@ -27,8 +27,8 @@ public class BrewDetails {
     private Product product;
     private Set<ProductParameter> productParameters;
 
-    public BrewDetails(UUID id, @Past LocalDate brewDate, @Size(max = 5000) String description, boolean isPublic,
-                       UUID brewingToolsDictionaryId, UserDto user, Product product, Set<ProductParameter> productParameters) {
+    public Brew(UUID id, @Past LocalDate brewDate, @Size(max = 5000) String description, boolean isPublic,
+                UUID brewingToolsDictionaryId, UserDto user, Product product, Set<ProductParameter> productParameters) {
         this.id = id;
         this.brewDate = brewDate;
         this.description = description;

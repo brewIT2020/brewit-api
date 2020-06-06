@@ -23,65 +23,56 @@ import static io.javalin.apibuilder.ApiBuilder.*;
 @Singleton
 public class UserController {
 
-  private Javalin javalin;
+    private Javalin javalin;
 
-  private UserFacade userFacade;
+    private UserFacade userFacade;
+    private Handler register =
+            ctx -> {
+                UserDto userDto = ctx.bodyAsClass(UserDto.class);
+                userFacade.register(userDto);
+                ctx.status(201);
+            };
+    private Handler getUser =
+            ctx -> {
+                String userId = ctx.pathParam("id");
+                UserDto user = userFacade.getUser(userId);
+                ctx.json(user);
+            };
+    private Handler getAllUsers =
+            ctx -> {
+                List<UserDto> users = userFacade.getAllUsers();
+                ctx.json(users);
+            };
+    private Handler updateEmail = ctx -> {
+        UserDto userDto = ctx.bodyAsClass(UserDto.class);
+        userFacade.updateEmail(userDto);
+        ctx.status(200);
+    };
 
-  @Inject
-  public UserController(Javalin javalin, UserFacade userFacade) {
-    this.javalin = javalin;
-    this.userFacade = userFacade;
-  }
+    @Inject
+    public UserController(Javalin javalin, UserFacade userFacade) {
+        this.javalin = javalin;
+        this.userFacade = userFacade;
+    }
 
-  public EndpointGroup endpoints() {
-    return () -> {
-      post(this::signUp);
-      get(getAllUsers);
-      path(
-              ":id",
-              () -> {
+    public EndpointGroup endpoints() {
+        return () -> {
+            post(this::signUp);
+            get(getAllUsers);
+            path(":id", () -> {
                 get(getUser);
                 patch(getAllUsers);
-                path("email",
-                        () -> {
-                          patch(updateEmail);
-                        });
-//                        patch(this::updatePassword);
-              });
-    };
-  }
+                path("email", () -> patch(updateEmail));
+//              patch(this::updatePassword);
+            });
+        };
+    }
 
-  private void signUp(Context context) {
-      UserDto userDto = JavalinJson.fromJson(context.body(), UserDto.class);
-      userFacade.register(userDto);
-      context.status(201);
-  }
-
-  private Handler register =
-          ctx -> {
-            UserDto userDto = ctx.bodyAsClass(UserDto.class);
-            userFacade.register(userDto);
-            ctx.status(201);
-          };
-
-  private Handler getUser =
-          ctx -> {
-            String userId = ctx.pathParam("id");
-            UserDto user = userFacade.getUser(userId);
-            ctx.json(user);
-          };
-
-  private Handler getAllUsers =
-          ctx -> {
-            List<UserDto> users = userFacade.getAllUsers();
-            ctx.json(users);
-          };
-
-  private Handler updateEmail = ctx -> {
-    UserDto userDto = ctx.bodyAsClass(UserDto.class);
-    userFacade.updateEmail(userDto);
-    ctx.status(200);
-  };
+    private void signUp(Context context) {
+        UserDto userDto = JavalinJson.fromJson(context.body(), UserDto.class);
+        userFacade.register(userDto);
+        context.status(201);
+    }
 
 //  private Handler updatePassword(Context ctx) {}
 }
