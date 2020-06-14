@@ -1,4 +1,4 @@
-package pl.brewit.dictionary.repository;
+package pl.brewit.dictionary.repository.dao;
 
 import pl.brewit.common.repository.BaseEntity;
 
@@ -10,6 +10,10 @@ public class UnitsDictionary extends BaseEntity {
 
     @Column(name = "name", nullable = false, updatable = false)
     private String name;
+
+    public UnitsDictionary() {
+
+    }
 
     public UnitsDictionary(String name) {
         this.name = name;

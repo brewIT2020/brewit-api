@@ -48,21 +48,21 @@ public class JWTAuthorizationFilter implements Filter {
         JwtAuthenticator jwtAuthenticator = securityConfig.getJwtAuthenticator();
         J2EContext context = new J2EContext((HttpServletRequest) request, (HttpServletResponse) response);
 
-        String authHeader = ((HttpServletRequest) request).getHeader(HttpConstants.AUTHORIZATION_HEADER);
-        if (requestMatcher.requiresAuthentication(context)) {
-            chain.doFilter(request, response);
-            return;
-        }
+        //String authHeader = ((HttpServletRequest) request).getHeader("Authorization");
+        //if (requestMatcher.requiresAuthentication(context)) {
+        //    chain.doFilter(request, response);
+       //     return;
+        //}
 
-        CommonProfile commonProfile = jwtAuthenticator.validateToken(authHeader.replace(HttpConstants.BEARER_HEADER_PREFIX, ""));
+        //CommonProfile commonProfile = jwtAuthenticator.validateToken(authHeader.replace(HttpConstants.BEARER_HEADER_PREFIX, ""));
 
-        if (requestMatcher.requiresAuthentication(context)) {
-            if (!IsAuthenticatedAuthorizer.isAuthenticated().isProfileAuthorized(context, commonProfile)) {
-                ((HttpServletResponse) response).sendError(HttpServletResponse.SC_UNAUTHORIZED);
-            }
-        }
+       // if (requestMatcher.requiresAuthentication(context)) {
+       //     if (!IsAuthenticatedAuthorizer.isAuthenticated().isProfileAuthorized(context, commonProfile)) {
+        //        ((HttpServletResponse) response).sendError(HttpServletResponse.SC_UNAUTHORIZED);
+       //     }
+       // }
 
-        chain.doFilter(request, response);
+       // chain.doFilter(request, response);
     }
 
     private void authorize(CommonProfile profile) {

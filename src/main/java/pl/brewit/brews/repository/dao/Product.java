@@ -2,8 +2,8 @@ package pl.brewit.brews.repository.dao;
 
 import org.hibernate.annotations.Cascade;
 import pl.brewit.common.repository.BaseEntity;
-import pl.brewit.dictionary.repository.CountriesDictionary;
-import pl.brewit.dictionary.repository.ProductTypesDictionary;
+import pl.brewit.dictionary.repository.dao.CountriesDictionary;
+import pl.brewit.dictionary.repository.dao.ProductTypesDictionary;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -33,6 +33,10 @@ public class Product extends BaseEntity {
     @JoinColumn(name = "product_id",
             foreignKey = @javax.persistence.ForeignKey(name = "fk_product_parameters_product"))
     private Set<ProductParameter> productParameterValues;
+
+    public Product() {
+
+    }
 
     public Product(String productName, boolean isTemplate, CountriesDictionary country, ProductTypesDictionary productType, Set<ProductParameter> productParameterValues) {
         this.productName = productName;

@@ -52,7 +52,7 @@ public class App {
                                 () -> {
                                     path("users", injector.getInstance(UserController.class).endpoints());
                                     path("brews", injector.getInstance(BrewController.class).endpoints());
-                                })
-                        .start(7000);
+                                });
+        app.start(42069);
     }
 }

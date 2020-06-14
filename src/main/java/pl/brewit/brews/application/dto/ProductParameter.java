@@ -1,15 +1,7 @@
 package pl.brewit.brews.application.dto;
 
-import pl.brewit.dictionary.repository.CountriesDictionary;
-import pl.brewit.dictionary.repository.ProductParametersDictionary;
-import pl.brewit.dictionary.repository.ProductTypesDictionary;
-
-import javax.persistence.Column;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import java.util.Set;
 import java.util.UUID;
 
 public class ProductParameter {

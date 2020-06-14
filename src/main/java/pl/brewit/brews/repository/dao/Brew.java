@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 import org.hibernate.annotations.Cascade;
 import pl.brewit.common.repository.BaseEntity;
-import pl.brewit.dictionary.repository.BrewingToolsDictionary;
+import pl.brewit.dictionary.repository.dao.BrewingToolsDictionary;
 import pl.brewit.user.User;
 
 @Entity
@@ -44,6 +44,10 @@ public class Brew extends BaseEntity {
             foreignKey = @javax.persistence.ForeignKey(name = "fk_rankings_brew"))
     private Set<BrewRanking> rankings;
 
+    public Brew() {
+
+    }
+
     public Brew(LocalDate brewDate, String description, boolean isPublic, User user, Product product, BrewingToolsDictionary brewingTool) {
         this.brewDate = brewDate;
         this.description = description;
@@ -51,5 +55,61 @@ public class Brew extends BaseEntity {
         this.user = user;
         this.product = product;
         this.brewingTool = brewingTool;
+    }
+
+    public LocalDate getBrewDate() {
+        return brewDate;
+    }
+
+    public void setBrewDate(LocalDate brewDate) {
+        this.brewDate = brewDate;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public boolean isPublic() {
+        return isPublic;
+    }
+
+    public void setPublic(boolean aPublic) {
+        isPublic = aPublic;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
+    public BrewingToolsDictionary getBrewingTool() {
+        return brewingTool;
+    }
+
+    public void setBrewingTool(BrewingToolsDictionary brewingTool) {
+        this.brewingTool = brewingTool;
+    }
+
+    public Set<BrewRanking> getRankings() {
+        return rankings;
+    }
+
+    public void setRankings(Set<BrewRanking> rankings) {
+        this.rankings = rankings;
     }
 }

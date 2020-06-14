@@ -1,4 +1,4 @@
-package pl.brewit.dictionary.repository;
+package pl.brewit.dictionary.repository.dao;
 
 import pl.brewit.brews.repository.dao.Product;
 import pl.brewit.common.repository.BaseEntity;
@@ -15,6 +15,10 @@ public class CountriesDictionary extends BaseEntity {
 
     @Column(name = "code", nullable = false)
     private String code;
+
+    public CountriesDictionary() {
+
+    }
 
     public CountriesDictionary(String name, String code) {
         this.name = name;

@@ -1,9 +1,8 @@
 package pl.brewit.brews.repository.dao;
 
-import pl.brewit.brews.repository.dao.Product;
 import pl.brewit.common.repository.BaseEntity;
-import pl.brewit.dictionary.repository.ProductParametersDictionary;
-import pl.brewit.dictionary.repository.ProductTypesDictionary;
+import pl.brewit.dictionary.repository.dao.ProductParametersDictionary;
+import pl.brewit.dictionary.repository.dao.ProductTypesDictionary;
 
 import javax.persistence.*;
 
@@ -23,6 +22,10 @@ public class ProductParameter extends BaseEntity {
     @JoinColumn(name = "parameter_id", nullable = false,
             foreignKey = @javax.persistence.ForeignKey(name = "fk_product_parameters_parameter"))
     private ProductParametersDictionary parameter;
+
+    public ProductParameter() {
+
+    }
 
     public ProductParameter(String parameterValue, ProductTypesDictionary productType, ProductParametersDictionary parameter) {
         this.parameterValue = parameterValue;

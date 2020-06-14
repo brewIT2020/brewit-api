@@ -1,15 +1,7 @@
 package pl.brewit.brews.application.dto;
 
-import org.hibernate.annotations.Cascade;
-import pl.brewit.brews.repository.dao.BrewRanking;
-import pl.brewit.dictionary.repository.BrewingToolsDictionary;
 import pl.brewit.user.UserDto;
 
-import javax.persistence.Column;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
