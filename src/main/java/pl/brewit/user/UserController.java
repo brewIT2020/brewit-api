@@ -26,28 +26,6 @@ public class UserController {
     private Javalin javalin;
 
     private UserFacade userFacade;
-    private Handler register =
-            ctx -> {
-                UserDto userDto = ctx.bodyAsClass(UserDto.class);
-                userFacade.register(userDto);
-                ctx.status(201);
-            };
-    private Handler getUser =
-            ctx -> {
-                String userId = ctx.pathParam("id");
-                UserDto user = userFacade.getUser(userId);
-                ctx.json(user);
-            };
-    private Handler getAllUsers =
-            ctx -> {
-                List<UserDto> users = userFacade.getAllUsers();
-                ctx.json(users);
-            };
-    private Handler updateEmail = ctx -> {
-        UserDto userDto = ctx.bodyAsClass(UserDto.class);
-        userFacade.updateEmail(userDto);
-        ctx.status(200);
-    };
 
     @Inject
     public UserController(Javalin javalin, UserFacade userFacade) {
@@ -58,11 +36,10 @@ public class UserController {
     public EndpointGroup endpoints() {
         return () -> {
             post(this::signUp);
-            get(getAllUsers);
+            get(this::getAllUsers);
             path(":id", () -> {
-                get(getUser);
-                patch(getAllUsers);
-                path("email", () -> patch(updateEmail));
+                get(this::getUser);
+//                path("email", () -> patch(updateEmail));
 //              patch(this::updatePassword);
             });
         };
@@ -73,6 +50,24 @@ public class UserController {
         userFacade.register(userDto);
         context.status(201);
     }
+
+    private void getUser(Context context) {
+        String userId = context.pathParam("id");
+        UserDto user = userFacade.getUser(userId);
+        context.json(user);
+    }
+
+    private void getAllUsers(Context context) {
+        List<UserDto> users = userFacade.getAllUsers();
+        context.json(users);
+    }
+
+//    private Handler updateEmail = ctx -> {
+//        UserDto userDto = ctx.bodyAsClass(UserDto.class);
+//        userFacade.updateEmail(userDto);
+//        ctx.status(200);
+//    };
+
 
 //  private Handler updatePassword(Context ctx) {}
 }

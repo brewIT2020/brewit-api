@@ -1,14 +1,10 @@
 package pl.brewit.user.auth.filter;
 
 import com.google.inject.Inject;
-import org.pac4j.core.authorization.authorizer.Authorizer;
+import org.apache.commons.lang3.StringUtils;
 import org.pac4j.core.authorization.authorizer.IsAuthenticatedAuthorizer;
-import org.pac4j.core.authorization.authorizer.IsFullyAuthenticatedAuthorizer;
-import org.pac4j.core.context.DefaultAuthorizers;
 import org.pac4j.core.context.HttpConstants;
 import org.pac4j.core.context.J2EContext;
-import org.pac4j.core.credentials.TokenCredentials;
-import org.pac4j.core.engine.DefaultSecurityLogic;
 import org.pac4j.core.profile.CommonProfile;
 import org.pac4j.jwt.credentials.authenticator.JwtAuthenticator;
 import pl.brewit.user.auth.pac4jauth.RequestMatcher;
@@ -48,21 +44,21 @@ public class JWTAuthorizationFilter implements Filter {
         JwtAuthenticator jwtAuthenticator = securityConfig.getJwtAuthenticator();
         J2EContext context = new J2EContext((HttpServletRequest) request, (HttpServletResponse) response);
 
-        //String authHeader = ((HttpServletRequest) request).getHeader("Authorization");
-        //if (requestMatcher.requiresAuthentication(context)) {
-        //    chain.doFilter(request, response);
-       //     return;
-        //}
+        String authHeader = ((HttpServletRequest) request).getHeader("Authorization");
+        if (requestMatcher.requiresAuthentication(context) || StringUtils.isEmpty(authHeader)) {
+            chain.doFilter(request, response);
+            return;
+        }
 
-        //CommonProfile commonProfile = jwtAuthenticator.validateToken(authHeader.replace(HttpConstants.BEARER_HEADER_PREFIX, ""));
+        CommonProfile commonProfile = jwtAuthenticator.validateToken(authHeader.replace(HttpConstants.BEARER_HEADER_PREFIX, ""));
 
-       // if (requestMatcher.requiresAuthentication(context)) {
-       //     if (!IsAuthenticatedAuthorizer.isAuthenticated().isProfileAuthorized(context, commonProfile)) {
-        //        ((HttpServletResponse) response).sendError(HttpServletResponse.SC_UNAUTHORIZED);
-       //     }
-       // }
+        if (requestMatcher.requiresAuthentication(context)) {
+            if (!IsAuthenticatedAuthorizer.isAuthenticated().isProfileAuthorized(context, commonProfile)) {
+                ((HttpServletResponse) response).sendError(HttpServletResponse.SC_UNAUTHORIZED);
+            }
+        }
 
-       // chain.doFilter(request, response);
+        chain.doFilter(request, response);
     }
 
     private void authorize(CommonProfile profile) {
