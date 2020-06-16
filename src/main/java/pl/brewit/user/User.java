@@ -14,7 +14,8 @@ import javax.validation.constraints.NotBlank;
  * <p>
  * Author : Kamil Szerląg
  */
-@Entity(name = "account")
+@Entity
+@Table(name = "user", schema = "\"users\"")
 public class User extends BaseEntity {
 
     @Column(name = "username", unique = true, nullable = false, length = 50, updatable = false)

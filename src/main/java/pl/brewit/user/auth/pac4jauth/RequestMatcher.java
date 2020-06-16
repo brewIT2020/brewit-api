@@ -20,7 +20,7 @@ public class RequestMatcher {
             return true;
         }
         if (pathMatcher.matches(context)) {
-            return !headerMatcher.matches(context);
+            return headerMatcher.matches(context);
         }
         return false;
     }
