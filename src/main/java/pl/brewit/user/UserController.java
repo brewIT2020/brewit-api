@@ -5,8 +5,6 @@ import com.google.inject.Singleton;
 import io.javalin.Javalin;
 import io.javalin.apibuilder.EndpointGroup;
 import io.javalin.http.Context;
-import io.javalin.http.Handler;
-import io.javalin.plugin.json.JavalinJackson;
 import io.javalin.plugin.json.JavalinJson;
 
 import java.util.List;
@@ -23,65 +21,48 @@ import static io.javalin.apibuilder.ApiBuilder.*;
 @Singleton
 public class UserController {
 
-  private Javalin javalin;
+    private Javalin javalin;
 
-  private UserFacade userFacade;
+    private UserFacade userFacade;
 
-  @Inject
-  public UserController(Javalin javalin, UserFacade userFacade) {
-    this.javalin = javalin;
-    this.userFacade = userFacade;
-  }
+    @Inject
+    public UserController(Javalin javalin, UserFacade userFacade) {
+        this.javalin = javalin;
+        this.userFacade = userFacade;
+    }
 
-  public EndpointGroup endpoints() {
-    return () -> {
-      post(this::signUp);
-      get(getAllUsers);
-      path(
-              ":id",
-              () -> {
-                get(getUser);
-                patch(getAllUsers);
-                path("email",
-                        () -> {
-                          patch(updateEmail);
-                        });
-//                        patch(this::updatePassword);
-              });
-    };
-  }
+    public EndpointGroup endpoints() {
+        return () -> {
+            post(this::signUp);
+            get(this::getAllUsers);
+            path(":id", () -> {
+                get(this::getUser);
+                put(this::updateUser);
+            });
+        };
+    }
 
-  private void signUp(Context context) {
-      UserDto userDto = JavalinJson.fromJson(context.body(), UserDto.class);
-      userFacade.register(userDto);
-      context.status(201);
-  }
+    //This method is public because we are mapping request under /sign-up
+    public void signUp(Context context) {
+        UserDto userDto = JavalinJson.fromJson(context.body(), UserDto.class);
+        userFacade.register(userDto);
+        context.status(201);
+    }
 
-  private Handler register =
-          ctx -> {
-            UserDto userDto = ctx.bodyAsClass(UserDto.class);
-            userFacade.register(userDto);
-            ctx.status(201);
-          };
+    private void getAllUsers(Context context) {
+        List<UserDto> users = userFacade.getAllUsers();
+        context.json(users);
+    }
 
-  private Handler getUser =
-          ctx -> {
-            String userId = ctx.pathParam("id");
-            UserDto user = userFacade.getUser(userId);
-            ctx.json(user);
-          };
+    private void getUser(Context context) {
+        String userId = context.pathParam("id");
+        UserDto user = userFacade.getUser(userId);
+        context.json(user);
+    }
 
-  private Handler getAllUsers =
-          ctx -> {
-            List<UserDto> users = userFacade.getAllUsers();
-            ctx.json(users);
-          };
-
-  private Handler updateEmail = ctx -> {
-    UserDto userDto = ctx.bodyAsClass(UserDto.class);
-    userFacade.updateEmail(userDto);
-    ctx.status(200);
-  };
-
-//  private Handler updatePassword(Context ctx) {}
+    private void updateUser(Context context) {
+        String userId = context.pathParam("id");
+        UserDto userDto = JavalinJson.fromJson(context.body(), UserDto.class);
+        userFacade.updateUser(userDto);
+    }
 }

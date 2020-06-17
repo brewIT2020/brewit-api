@@ -16,6 +16,13 @@ import org.slf4j.LoggerFactory;
 import pl.brewit.user.User;
 import pl.brewit.user.UserService;
 import pl.brewit.user.auth.crypt.PasswordEncryptor;
+/**
+ * Project: brewit-api
+ * <p>
+ * Created on: 22.03.2020
+ * <p>
+ * Author : Kamil Szerląg
+ */
 
 public class BasicUsernamePasswordAuthenticator implements Authenticator {
 
@@ -44,7 +51,7 @@ public class BasicUsernamePasswordAuthenticator implements Authenticator {
     UsernamePasswordCredentials credits = (UsernamePasswordCredentials) credentials;
     User user;
     if (StringUtils.isNotBlank(credits.getUsername())
-        && StringUtils.isNotBlank(credits.getUsername())) {
+        && StringUtils.isNotBlank(credits.getPassword())) {
       user =
           EmailValidator.getInstance().isValid(credits.getUsername())
               ? userService.findByEmail(credits.getUsername())

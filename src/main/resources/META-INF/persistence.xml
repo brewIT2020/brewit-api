@@ -4,14 +4,14 @@
     <persistence-unit name="BrewIT" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <properties>
-            <property name="hibernate.connection.url" value="jdbc:postgresql://brewit.online:5432/test1"/>
+            <property name="hibernate.connection.url" value="jdbc:postgresql://217.182.79.118:5432/test1"/>
             <property name="hibernate.connection.driver_class" value="org.postgresql.Driver"/>
             <property name="hibernate.connection.username" value="op"/>
             <property name="hibernate.connection.password" value="Z7@{kEbSQ2gy{AQspZo6vDAuLs^UnQFD"/>
             <property name="hibernate.archive.autodetection" value="class"/>
             <property name="hibernate.show_sql" value="true"/>
             <property name="hibernate.format_sql" value="true"/>
-            <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL82Dialect"/>
         </properties>
     </persistence-unit>

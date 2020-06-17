@@ -14,9 +14,9 @@ import java.util.List;
 // TODO: 22.03.2020
 public interface UserRepository extends CrudRepository<User> {
 
-  List<User> findAll();
+    List<User> findAll();
 
-  User findByUsername(String username);
+    User findByUsername(String username);
 
-  User findByEmail(String email);
+    User findByEmail(String email);
 }

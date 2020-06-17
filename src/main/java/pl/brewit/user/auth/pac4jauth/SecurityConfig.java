@@ -16,6 +16,13 @@ import pl.brewit.user.AuthorizationRole;
 import java.util.Date;
 
 // TODO: 4/24/20 Refactoring to SecurityConfigFactory
+/**
+ * Project: brewit-api
+ * <p>
+ * Created on: 22.03.2020
+ * <p>
+ * Author : Kamil Szerląg
+ */
 
 @Singleton
 public class SecurityConfig {

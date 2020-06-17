@@ -1,22 +1,14 @@
 package pl.brewit.brews.application.dto;
 
-import org.hibernate.annotations.Cascade;
-import pl.brewit.brews.repository.dao.BrewRanking;
-import pl.brewit.dictionary.repository.BrewingToolsDictionary;
 import pl.brewit.user.UserDto;
 
-import javax.persistence.Column;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.Set;
 import java.util.UUID;
 
-public class BrewDetails {
+public class Brew {
 
     private UUID id;
     @Past private LocalDate brewDate;
@@ -27,8 +19,8 @@ public class BrewDetails {
     private Product product;
     private Set<ProductParameter> productParameters;
 
-    public BrewDetails(UUID id, @Past LocalDate brewDate, @Size(max = 5000) String description, boolean isPublic,
-                       UUID brewingToolsDictionaryId, UserDto user, Product product, Set<ProductParameter> productParameters) {
+    public Brew(UUID id, @Past LocalDate brewDate, @Size(max = 5000) String description, boolean isPublic,
+                UUID brewingToolsDictionaryId, UserDto user, Product product, Set<ProductParameter> productParameters) {
         this.id = id;
         this.brewDate = brewDate;
         this.description = description;

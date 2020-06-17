@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.Arrays;
 import java.util.Set;
 
 /**
@@ -65,17 +66,8 @@ public class JWTAuthenticationFilter implements Filter {
   @Override
   public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
       throws IOException, ServletException {
-    requestMatcher.getHeaderMatcher().setHeaderName(HttpConstants.AUTHORIZATION_HEADER);
-    requestMatcher.getPathMatcher().setExcludedPath("/login");
-    requestMatcher.getMethodMatcher().setMethods(Set.of(HttpConstants.HTTP_METHOD.POST));
-
     WebContext context =
         new J2EContext((HttpServletRequest) request, (HttpServletResponse) response);
-
-    if (!requestMatcher.requiresAuthentication(context)) {
-      chain.doFilter(request, response);
-      return;
-    }
 
     CommonProfile commonProfile = null;
     try {
@@ -110,7 +102,8 @@ public class JWTAuthenticationFilter implements Filter {
     authorizationGenerator.generate(context, profile);
     JwtGenerator<CommonProfile> jwtGenerator = securityConfig.getJwtGenerator();
     String token = jwtGenerator.generate(profile);
-    context.setResponseHeader(HttpConstants.AUTHORIZATION_HEADER, HttpConstants.BEARER_HEADER_PREFIX + token);
+    context.setResponseHeader(
+        HttpConstants.AUTHORIZATION_HEADER, HttpConstants.BEARER_HEADER_PREFIX + token);
   }
 
   private void unsuccessfulAuth() {}

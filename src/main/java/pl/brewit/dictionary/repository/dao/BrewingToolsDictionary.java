@@ -1,4 +1,4 @@
-package pl.brewit.dictionary.repository;
+package pl.brewit.dictionary.repository.dao;
 
 import pl.brewit.brews.repository.dao.Brew;
 import pl.brewit.common.repository.BaseEntity;
@@ -13,7 +13,10 @@ public class BrewingToolsDictionary extends BaseEntity {
     @Column(name = "name", nullable = false, updatable = false)
     private String name;
 
-    public BrewingToolsDictionary(String name, ProductTypesDictionary productType) {
+    public BrewingToolsDictionary() {
+    }
+
+    public BrewingToolsDictionary(String name) {
         this.name = name;
     }
 

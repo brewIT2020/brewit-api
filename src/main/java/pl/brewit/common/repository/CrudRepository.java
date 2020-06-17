@@ -2,6 +2,7 @@ package pl.brewit.common.repository;
 
 import java.util.Collection;
 import java.util.Optional;
+import java.util.UUID;
 
 /**
  * Project: brewit-api
@@ -16,7 +17,9 @@ public interface CrudRepository<T> {
 
   void update(T object);
 
-  Optional<T> findById(Long id);
+  Optional<T> findById(Long uuid);
+
+  Optional<T> findById(UUID uuid);
 
 //  Collection<T> findAll();
 

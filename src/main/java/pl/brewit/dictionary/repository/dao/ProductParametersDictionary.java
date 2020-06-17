@@ -1,12 +1,8 @@
-package pl.brewit.dictionary.repository;
+package pl.brewit.dictionary.repository.dao;
 
 import javax.persistence.*;
 
-import org.hibernate.annotations.Cascade;
-import pl.brewit.brews.repository.dao.ProductParameter;
 import pl.brewit.common.repository.BaseEntity;
-
-import java.util.Set;
 
 @Entity
 @Table(name = "product_parameters", schema = "\"dictionaries\"")
@@ -19,6 +15,10 @@ public class ProductParametersDictionary extends BaseEntity {
     @JoinColumn(name = "unit_id",
             foreignKey = @javax.persistence.ForeignKey(name = "fk_product_parameters_unit"))
     private UnitsDictionary unit;
+
+    public ProductParametersDictionary() {
+
+    }
 
     public ProductParametersDictionary(String parameterName, UnitsDictionary unit) {
         this.parameterName = parameterName;

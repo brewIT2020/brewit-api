@@ -4,6 +4,8 @@ import com.google.inject.Inject;
 import com.google.inject.persist.Transactional;
 import pl.brewit.user.auth.crypt.PasswordEncryptor;
 
+import java.util.UUID;
+
 /**
  * Project: brewit-api
  *
@@ -13,34 +15,37 @@ import pl.brewit.user.auth.crypt.PasswordEncryptor;
  */
 public class UserServiceImpl implements UserService {
 
-  private UserRepository userRepository;
+    private UserRepository userRepository;
 
-  @Inject
-  public UserServiceImpl(UserRepository userRepository) {
-    this.userRepository = userRepository;
-  }
+    @Inject
+    public UserServiceImpl(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
-  @Override
-  @Transactional
-  public void save(User user) {
-    encryptPassword(user);
-    userRepository.save(user);
-  }
+    @Override
+    @Transactional
+    public void save(User user) {
+        encryptPassword(user);
+        userRepository.save(user);
+    }
 
-  private void encryptPassword(User user) {
-    String encryptedPassword = PasswordEncryptor.encryptPassword(user.getPassword());
-    user.setPassword(encryptedPassword);
-  }
+    @Override
+    public User findById(UUID id) {
+        return userRepository.findById(id).orElse(null);
+    }
 
-  @Override
-  public User findByEmail(String principal) {
-    return userRepository.findByEmail(principal);
-  }
+    private void encryptPassword(User user) {
+        String encryptedPassword = PasswordEncryptor.encryptPassword(user.getPassword());
+        user.setPassword(encryptedPassword);
+    }
 
-  @Override
-  public User findByUsername(String principal) {
-    return userRepository.findByUsername(principal);
-  }
+    @Override
+    public User findByEmail(String principal) {
+        return userRepository.findByEmail(principal);
+    }
 
-
+    @Override
+    public User findByUsername(String principal) {
+        return userRepository.findByUsername(principal);
+    }
 }

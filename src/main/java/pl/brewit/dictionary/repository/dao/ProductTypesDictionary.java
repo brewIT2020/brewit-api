@@ -1,9 +1,6 @@
-package pl.brewit.dictionary.repository;
+package pl.brewit.dictionary.repository.dao;
 
 import org.hibernate.annotations.Cascade;
-import pl.brewit.brews.repository.dao.BrewRanking;
-import pl.brewit.brews.repository.dao.Product;
-import pl.brewit.brews.repository.dao.ProductParameter;
 import pl.brewit.common.repository.BaseEntity;
 
 import javax.persistence.*;
@@ -27,6 +24,10 @@ public class ProductTypesDictionary extends BaseEntity {
     @JoinColumn(name = "product_type_id",
             foreignKey = @javax.persistence.ForeignKey(name = "fk_brewing_tools_product_type"))
     private Set<BrewingToolsDictionary> brewingToolsDictionaries;
+
+    public ProductTypesDictionary() {
+
+    }
 
     public ProductTypesDictionary(String name, Set<ProductParametersDictionary> productParametersDictionaries, Set<BrewingToolsDictionary> brewingToolsDictionaries) {
         this.name = name;
