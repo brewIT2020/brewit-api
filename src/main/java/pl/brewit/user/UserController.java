@@ -5,8 +5,6 @@ import com.google.inject.Singleton;
 import io.javalin.Javalin;
 import io.javalin.apibuilder.EndpointGroup;
 import io.javalin.http.Context;
-import io.javalin.http.Handler;
-import io.javalin.plugin.json.JavalinJackson;
 import io.javalin.plugin.json.JavalinJson;
 
 import java.util.List;
@@ -39,16 +37,21 @@ public class UserController {
             get(this::getAllUsers);
             path(":id", () -> {
                 get(this::getUser);
-//                path("email", () -> patch(updateEmail));
-//              patch(this::updatePassword);
+                put(this::updateUser);
             });
         };
     }
 
-    private void signUp(Context context) {
+    //This method is public because we are mapping request under /sign-up
+    public void signUp(Context context) {
         UserDto userDto = JavalinJson.fromJson(context.body(), UserDto.class);
         userFacade.register(userDto);
         context.status(201);
+    }
+
+    private void getAllUsers(Context context) {
+        List<UserDto> users = userFacade.getAllUsers();
+        context.json(users);
     }
 
     private void getUser(Context context) {
@@ -57,17 +60,9 @@ public class UserController {
         context.json(user);
     }
 
-    private void getAllUsers(Context context) {
-        List<UserDto> users = userFacade.getAllUsers();
-        context.json(users);
+    private void updateUser(Context context) {
+        String userId = context.pathParam("id");
+        UserDto userDto = JavalinJson.fromJson(context.body(), UserDto.class);
+        userFacade.updateUser(userDto);
     }
-
-//    private Handler updateEmail = ctx -> {
-//        UserDto userDto = ctx.bodyAsClass(UserDto.class);
-//        userFacade.updateEmail(userDto);
-//        ctx.status(200);
-//    };
-
-
-//  private Handler updatePassword(Context ctx) {}
 }

@@ -35,7 +35,7 @@ public final class JavalinWebServer {
                             injector.getInstance(BasicUsernamePasswordAuthenticator.class),
                             injector.getInstance(RequestMatcher.class),
                             injector.getInstance(SecurityConfig.class))),
-                    "/*",
+                    "/login",
                     of(REQUEST));
                 servletContextHandler.addFilter(
                     new FilterHolder(

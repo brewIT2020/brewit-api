@@ -3,6 +3,7 @@ package pl.brewit.user;
 import com.google.inject.Inject;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Project: brewit-api
@@ -45,7 +46,12 @@ public class UserFacadeImpl implements UserFacade {
 
     @Override
     public UserDto getUser(String userId) {
-        return null;
+        User user = userService.findById(UUID.fromString(userId));
+        UserDto userDto = new UserDto();
+        userDto.setUsername(user.getUsername());
+        userDto.setEmail(user.getEmail());
+        userDto.setMode(user.getAuthorizationRole().toString());
+        return userDto;
     }
 
     @Override
@@ -54,7 +60,9 @@ public class UserFacadeImpl implements UserFacade {
     }
 
     @Override
-    public void updateEmail(UserDto userDto) {
+    public void updateUser(UserDto userDto) {
 
     }
+
+
 }

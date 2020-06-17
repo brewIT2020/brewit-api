@@ -8,6 +8,13 @@ import org.pac4j.core.profile.CommonProfile;
 import pl.brewit.user.AuthorizationRole;
 
 import java.util.List;
+/**
+ * Project: brewit-api
+ * <p>
+ * Created on: 22.03.2020
+ * <p>
+ * Author : Kamil Szerląg
+ */
 
 public class JWTAuthorizer implements Authorizer<CommonProfile> {
 

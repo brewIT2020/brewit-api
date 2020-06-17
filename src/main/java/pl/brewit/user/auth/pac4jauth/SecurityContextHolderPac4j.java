@@ -1,6 +1,13 @@
 package pl.brewit.user.auth.pac4jauth;
 
 import org.pac4j.core.context.WebContext;
+/**
+ * Project: brewit-api
+ * <p>
+ * Created on: 22.03.2020
+ * <p>
+ * Author : Kamil Szerląg
+ */
 
 public class SecurityContextHolderPac4j {
 
