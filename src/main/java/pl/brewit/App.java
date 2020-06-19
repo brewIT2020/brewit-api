@@ -4,8 +4,8 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.servlet.ServletModule;
 import io.javalin.Javalin;
-import pl.brewit.brews.application.BrewController;
-import pl.brewit.brews.application.BrewModule;
+import pl.brewit.brew.BrewController;
+import pl.brewit.brew.BrewModule;
 import pl.brewit.common.repository.RepositoryModule;
 import pl.brewit.common.server.JavalinWebServer;
 import pl.brewit.common.server.WebServerModule;
@@ -38,7 +38,7 @@ public class App {
 
     injector.getInstance(SecurityConfig.class).configure();
 
-    //Here we have our mappings
+    //Mappings for controllers
     Javalin app =
         injector
             .getInstance(JavalinWebServer.class)
