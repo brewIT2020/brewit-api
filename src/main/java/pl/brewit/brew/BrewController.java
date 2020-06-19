@@ -53,13 +53,13 @@ public class BrewController {
         List<BrewDto> brews;
 
         // TODO : pobierz usera z contextu
-        if (userIdString != null && !userIdString.isEmpty()){
+        if (userIdString == null || userIdString.isEmpty()){
             context.status(401);
             return;
         }
-        if (startIndexString != null && !startIndexString.isEmpty())
+        if (startIndexString == null || startIndexString.isEmpty())
             startIndexString = "0";
-        if (getAmountString != null && !getAmountString.isEmpty())
+        if (getAmountString == null || getAmountString.isEmpty())
             getAmountString = "1";
 
         var userId = UUID.fromString(userIdString);
