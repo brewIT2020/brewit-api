@@ -22,8 +22,8 @@ public class BrewFacadeImpl implements BrewFacade {
         List<Brew> brews = brewService.getBrewsSimpleForUserSortedByDateDesc(userId, startIndex, getAmount);
         List<BrewDto> dtos = new ArrayList<>();
         for (Brew dao : brews) {
-            var dto = new BrewDto().fillValuesFromDao(dao);
-            dtos.add(dto);
+            var dto = new BrewDto().fillDataSimplifiedFromDao(dao);
+            dto.ifPresent(brewDto -> dtos.add(brewDto));
         }
         return dtos;
     }

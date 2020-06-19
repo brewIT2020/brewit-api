@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import pl.brewit.brew.entity.Brew;
 import pl.brewit.common.repository.SimpleCrudRepository;
+import pl.brewit.user.User;
 
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -24,8 +25,9 @@ public class BrewRepositoryImpl extends SimpleCrudRepository<Brew> implements Br
         CriteriaBuilder builder = getCriteriaBuilderForUser();
         CriteriaQuery<Brew> criteriaQuery = builder.createQuery(Brew.class);
         Root<Brew> brewRoot = criteriaQuery.from(Brew.class);
+        Root<User> userRoot = criteriaQuery.from(User.class);
         criteriaQuery.select(brewRoot).where(
-                builder.equal(brewRoot.get("user"), userId)
+                builder.equal(userRoot.get("id"), userId)
         );
 
         return getEntityManager().createQuery(criteriaQuery).setFirstResult(startIndex).setMaxResults(getAmount).getResultList();

@@ -8,7 +8,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
-import java.util.Iterator;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
@@ -73,28 +73,36 @@ public class BrewDto {
 
   }
 
-  public BrewDto fillValuesFromDao(Brew entity) {
-    this.id = entity.getId();
-    this.brewDate = entity.getBrewDate();
-    this.description = entity.getDescription();
-    this.isPublic = entity.isPublic();
-    this.brewingToolsDictionaryId = entity.getBrewingTool().getId();
+  public static Optional<BrewDto> fillDataSimplifiedFromDao(Brew entity) {
+    if (entity == null) return Optional.empty();
+    var temp = 100;
+    var time = 120;
+    var weight = 10;
+    var volume = 120;
+    var id = entity.getId();
+    var productName = entity.getProduct().getProductName();
+    var brewDate = entity.getBrewDate();
+    var description = entity.getDescription();
+    var isPublic = entity.isPublic();
+    var brewingToolsDictionaryId = entity.getBrewingTool().getId();
+    var user = new UserDto(entity.getUser().getUsername(), null, null);
     Set<ProductParameter> parameters = entity.getProduct().getProductParameterValues();
     for (ProductParameter productParameter : parameters) {
+      // TODO : pobierac słowniki z bazy
       switch (productParameter.getParameter().getId().toString()) {
         case "359e5384-4698-41af-ad2b-c0f1cc336e15":
-          this.temp = Integer.parseInt(productParameter.getParameterValue());
+          temp = Integer.parseInt(productParameter.getParameterValue());
           break;
         case "c44fd0a2-7254-4695-a475-d611759f967d":
-          this.time = Integer.parseInt(productParameter.getParameterValue());
+          time = Integer.parseInt(productParameter.getParameterValue());
           break;
         case "9696f96e-a687-11ea-bb37-0242ac130002":
-          this.weight = Integer.parseInt(productParameter.getParameterValue());
+          weight = Integer.parseInt(productParameter.getParameterValue());
           break;
       }
     }
 
-    return this;
+    return Optional.of(new BrewDto(id, productName, temp, time, volume, weight, brewDate, description));
   }
 
   public UUID getId() {

@@ -34,24 +34,6 @@ public class BrewController {
         brewFacade.createBrew(brewDto);
     }
 
-    private void getBrewsBasicForUserSortedByDateDesc(Context context) {
-        String userIdString = context.queryParam("userId");
-        String startIndexString = context.queryParam("startIndex");
-        String getAmountString = context.queryParam("getAmount");
-        List<BrewDto> brews;
-
-        if (userIdString != null && !userIdString.isEmpty() &&
-                startIndexString != null && !startIndexString.isEmpty() &&
-                getAmountString != null && !getAmountString.isEmpty()) {
-            UUID userId = UUID.fromString(userIdString);
-            int startIndex = Integer.parseInt(startIndexString);
-            int getAmount = Integer.parseInt(getAmountString);
-            brews = brewFacade.getBrewsSimpleForUserSortedByDateDesc(userId, startIndex, getAmount);
-            context.json(brews);
-            context.status(200);
-        }
-    }
-
     private void getBrew(Context context) {
         String brewIdString = context.queryParam("brewId");
         BrewDto brewDto;
@@ -62,6 +44,30 @@ public class BrewController {
             context.json(brewDto);
             context.status(200);
         }
+    }
+
+    private void getBrewsBasicForUserSortedByDateDesc(Context context) {
+        var userIdString = context.queryParam("userId");
+        var startIndexString = context.queryParam("startIndex");
+        var getAmountString = context.queryParam("getAmount");
+        List<BrewDto> brews;
+
+        // TODO : pobierz usera z contextu
+        if (userIdString != null && !userIdString.isEmpty()){
+            context.status(401);
+            return;
+        }
+        if (startIndexString != null && !startIndexString.isEmpty())
+            startIndexString = "0";
+        if (getAmountString != null && !getAmountString.isEmpty())
+            getAmountString = "1";
+
+        var userId = UUID.fromString(userIdString);
+        var startIndex = Integer.parseInt(startIndexString);
+        var getAmount = Integer.parseInt(getAmountString);
+        brews = brewFacade.getBrewsSimpleForUserSortedByDateDesc(userId, startIndex, getAmount);
+        context.json(brews);
+        context.status(200);
     }
 
 }
