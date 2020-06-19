@@ -21,13 +21,10 @@ import static io.javalin.apibuilder.ApiBuilder.*;
 @Singleton
 public class UserController {
 
-    private Javalin javalin;
-
     private UserFacade userFacade;
 
     @Inject
-    public UserController(Javalin javalin, UserFacade userFacade) {
-        this.javalin = javalin;
+    public UserController(UserFacade userFacade) {
         this.userFacade = userFacade;
     }
 
@@ -63,6 +60,6 @@ public class UserController {
     private void updateUser(Context context) {
         String userId = context.pathParam("id");
         UserDto userDto = JavalinJson.fromJson(context.body(), UserDto.class);
-        userFacade.updateUser(userDto);
+        userFacade.updateUser(userId, userDto);
     }
 }

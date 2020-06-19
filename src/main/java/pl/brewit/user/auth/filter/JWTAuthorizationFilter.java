@@ -1,7 +1,6 @@
 package pl.brewit.user.auth.filter;
 
 import com.google.inject.Inject;
-import org.apache.commons.lang3.StringUtils;
 import org.pac4j.core.authorization.authorizer.IsAuthenticatedAuthorizer;
 import org.pac4j.core.context.HttpConstants;
 import org.pac4j.core.context.J2EContext;

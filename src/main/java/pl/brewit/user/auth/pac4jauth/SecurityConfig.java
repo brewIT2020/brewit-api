@@ -27,7 +27,7 @@ import java.util.Date;
 @Singleton
 public class SecurityConfig {
 
-  private static final String[] DEFAULT_ROLES = {AuthorizationRole.BASIC.toString()};
+  private static final String[] DEFAULT_ROLES = {AuthorizationRole.USER.toString()};
   private static final String JWT_SECRET_KEY = "security.jwt.secret";
 
   private JwtGenerator<CommonProfile> jwtGenerator;
