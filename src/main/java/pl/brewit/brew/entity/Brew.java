@@ -41,6 +41,12 @@ public class Brew extends BaseEntity {
     @OneToMany
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
     @JoinColumn(name = "brew_id",
+            foreignKey = @javax.persistence.ForeignKey(name = "fk_product_parameters_brew"))
+    private Set<ProductParameter> productParameters;
+
+    @OneToMany
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+    @JoinColumn(name = "brew_id",
             foreignKey = @javax.persistence.ForeignKey(name = "fk_rankings_brew"))
     private Set<Ranking> rankings;
 

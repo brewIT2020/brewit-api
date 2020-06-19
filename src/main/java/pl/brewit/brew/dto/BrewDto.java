@@ -69,22 +69,32 @@ public class BrewDto {
     this.description = description;
   }
 
-  public static BrewDto createBasicBrewFrom(Brew entity) {
+  public BrewDto() {
+
+  }
+
+  public BrewDto fillValuesFromDao(Brew entity) {
+    this.id = entity.getId();
+    this.brewDate = entity.getBrewDate();
+    this.description = entity.getDescription();
+    this.isPublic = entity.isPublic();
+    this.brewingToolsDictionaryId = entity.getBrewingTool().getId();
     Set<ProductParameter> parameters = entity.getProduct().getProductParameterValues();
-    Integer temp = null;
-    Integer time = null;
-    Integer volume = null;
-    Integer weight = null;
-
-    for (Iterator<ProductParameter> iterator = parameters.iterator(); iterator.hasNext(); ) {
-      ProductParameter productParameter = iterator.next();
-      if (productParameter.getParameter().getParameterName().equals("Temperatura")) {
-        temp = productParameter.getParameterValue();
+    for (ProductParameter productParameter : parameters) {
+      switch (productParameter.getParameter().getId().toString()) {
+        case "359e5384-4698-41af-ad2b-c0f1cc336e15":
+          this.temp = Integer.parseInt(productParameter.getParameterValue());
+          break;
+        case "c44fd0a2-7254-4695-a475-d611759f967d":
+          this.time = Integer.parseInt(productParameter.getParameterValue());
+          break;
+        case "9696f96e-a687-11ea-bb37-0242ac130002":
+          this.weight = Integer.parseInt(productParameter.getParameterValue());
+          break;
       }
-
     }
 
-    return new BrewDto(entity.getId(), entity.getProduct().getProductName(), temp , time, volume, weight, entity.getBrewDate(), entity.getDescription());
+    return this;
   }
 
   public UUID getId() {

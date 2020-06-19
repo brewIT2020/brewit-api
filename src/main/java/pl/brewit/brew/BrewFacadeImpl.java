@@ -20,12 +20,12 @@ public class BrewFacadeImpl implements BrewFacade {
     @Override
     public List<BrewDto> getBrewsSimpleForUserSortedByDateDesc(UUID userId, int startIndex, int getAmount) {
         List<Brew> brews = brewService.getBrewsSimpleForUserSortedByDateDesc(userId, startIndex, getAmount);
-        List<BrewDto> brewDtos = new ArrayList<>();
-        for (Brew brew : brews) {
-//            new BrewDto(brew)
-//            brewDtos.add()
+        List<BrewDto> dtos = new ArrayList<>();
+        for (Brew dao : brews) {
+            var dto = new BrewDto().fillValuesFromDao(dao);
+            dtos.add(dto);
         }
-        return null;
+        return dtos;
     }
 
     @Override
