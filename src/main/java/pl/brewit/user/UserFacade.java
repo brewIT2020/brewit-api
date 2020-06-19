@@ -19,5 +19,5 @@ public interface UserFacade {
 
     List<UserDto> getAllUsers();
 
-    void updateEmail(UserDto userDto);
+    void updateUser(String userId, UserDto userDto);
 }

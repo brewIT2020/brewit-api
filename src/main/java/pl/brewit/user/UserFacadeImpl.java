@@ -3,6 +3,7 @@ package pl.brewit.user;
 import com.google.inject.Inject;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Project: brewit-api
@@ -35,17 +36,22 @@ public class UserFacadeImpl implements UserFacade {
     }
 
     private void assignAuthorizationRole(final UserDto userDto, final User user) {
-        if (userDto.getMode() == null || userDto.getMode().equalsIgnoreCase(BASIC_MODE)) {
-            user.setAuthorizationRole(AuthorizationRole.BASIC);
+        if (userDto.getRole() == null || userDto.getRole().equalsIgnoreCase(BASIC_MODE)) {
+            user.setAuthorizationRole(AuthorizationRole.USER);
         }
-        else if (userDto.getMode().equals(GOD_MODE)) {
-            user.setAuthorizationRole(AuthorizationRole.GOD);
+        else if (userDto.getRole().equals(GOD_MODE)) {
+            user.setAuthorizationRole(AuthorizationRole.ADMIN);
         }
     }
 
     @Override
     public UserDto getUser(String userId) {
-        return null;
+        User user = userService.findById(UUID.fromString(userId));
+        UserDto userDto = new UserDto();
+        userDto.setUsername(user.getUsername());
+        userDto.setEmail(user.getEmail());
+        userDto.setRole(user.getAuthorizationRole().toString());
+        return userDto;
     }
 
     @Override
@@ -54,7 +60,11 @@ public class UserFacadeImpl implements UserFacade {
     }
 
     @Override
-    public void updateEmail(UserDto userDto) {
+    public void updateUser(String userId , UserDto userDto) {
+        User user = userService.findById(UUID.fromString(userId));
+
 
     }
+
+
 }

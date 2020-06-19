@@ -1,8 +1,13 @@
 package pl.brewit.common.server;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Injector;
 import com.google.inject.persist.PersistFilter;
 import io.javalin.Javalin;
+import io.javalin.plugin.json.JavalinJackson;
 import org.eclipse.jetty.servlet.FilterHolder;
 import pl.brewit.user.auth.filter.JWTAuthenticationFilter;
 import pl.brewit.user.auth.filter.JWTAuthorizationFilter;
@@ -25,6 +30,16 @@ public final class JavalinWebServer {
   public Javalin app(final Injector injector) {
     return Javalin.create(
         config -> {
+          ObjectMapper objectMapper =
+              new ObjectMapper()
+                  .configure(JsonParser.Feature.IGNORE_UNDEFINED, true)
+                  .configure(JsonGenerator.Feature.IGNORE_UNKNOWN, true)
+                  .setSerializationInclusion(JsonInclude.Include.NON_NULL);
+          JavalinJackson.configure(objectMapper);
+          
+          // TODO: 19.06.2020 enable if DEV environment
+          config.enableDevLogging();
+
           config.configureServletContextHandler(
               servletContextHandler -> {
                 servletContextHandler.addFilter(
@@ -35,7 +50,7 @@ public final class JavalinWebServer {
                             injector.getInstance(BasicUsernamePasswordAuthenticator.class),
                             injector.getInstance(RequestMatcher.class),
                             injector.getInstance(SecurityConfig.class))),
-                    "/*",
+                    "/login",
                     of(REQUEST));
                 servletContextHandler.addFilter(
                     new FilterHolder(

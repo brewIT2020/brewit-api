@@ -4,6 +4,8 @@ import com.google.inject.Inject;
 import com.google.inject.persist.Transactional;
 import pl.brewit.user.auth.crypt.PasswordEncryptor;
 
+import java.util.UUID;
+
 /**
  * Project: brewit-api
  *
@@ -27,6 +29,11 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
     }
 
+    @Override
+    public User findById(UUID id) {
+        return userRepository.findById(id).orElse(null);
+    }
+
     private void encryptPassword(User user) {
         String encryptedPassword = PasswordEncryptor.encryptPassword(user.getPassword());
         user.setPassword(encryptedPassword);
@@ -41,6 +48,4 @@ public class UserServiceImpl implements UserService {
     public User findByUsername(String principal) {
         return userRepository.findByUsername(principal);
     }
-
-
 }

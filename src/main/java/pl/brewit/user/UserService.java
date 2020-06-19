@@ -2,6 +2,8 @@ package pl.brewit.user;
 
 import com.google.inject.Inject;
 
+import java.util.UUID;
+
 /**
  * Project: brewit-api
  * <p>
@@ -12,6 +14,8 @@ import com.google.inject.Inject;
 public interface UserService {
 
     void save(User user);
+
+    User findById(UUID id);
 
     User findByEmail(String principal);
 

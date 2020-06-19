@@ -1,6 +1,5 @@
 package pl.brewit.user;
 
-import javax.annotation.RegEx;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
@@ -25,7 +24,7 @@ public class UserDto {
     @NotBlank
     private String password;
 
-    private String mode;
+    private String role;
 
     public UserDto() {
     }
@@ -60,11 +59,11 @@ public class UserDto {
         this.password = password;
     }
 
-    public String getMode() {
-        return mode;
+    public String getRole() {
+        return role;
     }
 
-    public void setMode(String mode) {
-        this.mode = mode;
+    public void setRole(String role) {
+        this.role = role;
     }
 }
