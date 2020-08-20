@@ -5,12 +5,11 @@ import org.pac4j.core.profile.CommonProfile;
 
 /**
  * Project: brewit-api
- * <p>
- * Created on: 22.03.2020
- * <p>
- * Author : Kamil Szerląg
+ *
+ * <p>Created on: 22.03.2020
+ *
+ * <p>Author : Kamil Szerląg
  */
-
 public class SecurityContextHolder {
 
   private static final ThreadLocal<SecurityContext> THREAD_LOCAL = new ThreadLocal<>();
@@ -25,9 +24,9 @@ public class SecurityContextHolder {
     return THREAD_LOCAL.get();
   }
 
-//  public static void setContext(WebContext webContext) {
-//    THREAD_LOCAL.set(webContext);
-//  }
+  //  public static void setContext(WebContext webContext) {
+  //    THREAD_LOCAL.set(webContext);
+  //  }
 
   public static void destroy() {
     THREAD_LOCAL.set(null);

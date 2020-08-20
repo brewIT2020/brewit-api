@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface BrewService {
-    List<Brew> getBrewsSimpleForUserSortedByDateDesc(UUID userId, int startIndex, int getAmount);
+  List<Brew> getBrewsSimpleForUserSortedByDateDesc(UUID userId, int startIndex, int getAmount);
 
-    void saveBrew(Brew brew);
+  void saveBrew(Brew brew);
 }

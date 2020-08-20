@@ -2,7 +2,7 @@ package pl.brewit.user.auth.pac4jauth;
 
 import org.pac4j.core.profile.CommonProfile;
 
-public class SimpleSecurityContext implements SecurityContext{
+public class SimpleSecurityContext implements SecurityContext {
 
   private final CommonProfile userProfile;
 

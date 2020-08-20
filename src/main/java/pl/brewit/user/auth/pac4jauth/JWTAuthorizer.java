@@ -9,18 +9,17 @@ import pl.brewit.user.AuthorizationRole;
 import java.util.List;
 /**
  * Project: brewit-api
- * <p>
- * Created on: 22.03.2020
- * <p>
- * Author : Kamil Szerląg
+ *
+ * <p>Created on: 22.03.2020
+ *
+ * <p>Author : Kamil Szerląg
  */
-
 public class JWTAuthorizer implements Authorizer<CommonProfile> {
 
   @Override
   public boolean isAuthorized(WebContext context, List<CommonProfile> profiles) {
     return RequireAnyRoleAuthorizer.requireAnyRole(AuthorizationRole.USER.toString())
         .isAnyAuthorized(context, profiles);
-//    IsAuthenticatedAuthorizer.isAuthenticated();
+    //    IsAuthenticatedAuthorizer.isAuthenticated();
   }
 }

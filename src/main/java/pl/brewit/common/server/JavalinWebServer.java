@@ -37,7 +37,7 @@ public final class JavalinWebServer {
                   .configure(JsonGenerator.Feature.IGNORE_UNKNOWN, true)
                   .setSerializationInclusion(JsonInclude.Include.NON_NULL);
           JavalinJackson.configure(objectMapper);
-          
+
           // TODO: 19.06.2020 enable if DEV environment
           config.enableDevLogging();
 

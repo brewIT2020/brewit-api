@@ -2,7 +2,6 @@ package pl.brewit.user;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import io.javalin.Javalin;
 import io.javalin.apibuilder.EndpointGroup;
 import io.javalin.http.Context;
 import io.javalin.plugin.json.JavalinJson;

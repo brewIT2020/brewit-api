@@ -1,9 +1,7 @@
 package pl.brewit.brew.dto;
 
-import pl.brewit.brew.BrewConst;
 import pl.brewit.brew.entity.Brew;
 import pl.brewit.brew.entity.ProductParameter;
-import pl.brewit.user.UserDto;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Past;
@@ -14,23 +12,25 @@ import java.util.Set;
 import java.util.UUID;
 
 import static pl.brewit.brew.BrewConst.*;
-import static pl.brewit.brew.BrewConst.TIME_UUID;
-import static pl.brewit.brew.BrewConst.VOLUME_UUID;
 
 public class BrewDto {
 
   private UUID id;
 
   @NotBlank
-  @Size(max = 75) private String productName;
-  @NotBlank @Size(max = 200) private String descShort;
-  //Temperature - Celsius [°C]
+  @Size(max = 75)
+  private String productName;
+
+  @NotBlank
+  @Size(max = 200)
+  private String descShort;
+  // Temperature - Celsius [°C]
   private Integer temp;
-  //Time - Milliseconds [ms]
+  // Time - Milliseconds [ms]
   private Integer time;
-  //Volume - Milliliters [ml]
+  // Volume - Milliliters [ml]
   private Integer volume;
-  //Weight - Grams [gm]
+  // Weight - Grams [gm]
   private Integer weight;
 
   @Past private LocalDate brewDate;
@@ -45,14 +45,14 @@ public class BrewDto {
   private Set<ProductParameterDto> productParameters;
 
   public BrewDto(
-          UUID id,
-          LocalDate brewDate,
-          String description,
-          boolean isPublic,
-          UUID brewingToolsDictionaryId,
-          String userId,
-          ProductDto productDto,
-          Set<ProductParameterDto> productParameters) {
+      UUID id,
+      LocalDate brewDate,
+      String description,
+      boolean isPublic,
+      UUID brewingToolsDictionaryId,
+      String userId,
+      ProductDto productDto,
+      Set<ProductParameterDto> productParameters) {
     this.id = id;
     this.brewDate = brewDate;
     this.description = description;
@@ -63,7 +63,16 @@ public class BrewDto {
     this.productParameters = productParameters;
   }
 
-  private BrewDto(UUID id, @NotBlank @Size(max = 75) String productName, Integer temp, Integer time, Integer volume, Integer weight, @Past LocalDate brewDate, @Size(max = 5000) String description, String userId) {
+  private BrewDto(
+      UUID id,
+      @NotBlank @Size(max = 75) String productName,
+      Integer temp,
+      Integer time,
+      Integer volume,
+      Integer weight,
+      @Past LocalDate brewDate,
+      @Size(max = 5000) String description,
+      String userId) {
     this.id = id;
     this.productName = productName;
     this.temp = temp;
@@ -75,9 +84,7 @@ public class BrewDto {
     this.userId = userId;
   }
 
-  public BrewDto() {
-
-  }
+  public BrewDto() {}
 
   public static Optional<BrewDto> fillDataSimplifiedFromDao(Brew entity) {
     if (entity == null) return Optional.empty();
@@ -96,18 +103,19 @@ public class BrewDto {
     for (ProductParameter productParameter : parameters) {
       // TODO : pobierac słowniki z bazy
       String parameterUUID = productParameter.getParameter().getId().toString();
-        if (parameterUUID.equals(TEMP_UUID)) {
-          temp = Integer.parseInt(productParameter.getParameterValue());
-        }
-        if (parameterUUID.equals(TIME_UUID)) {
-          time = Integer.parseInt(productParameter.getParameterValue());
-        }
-        if (parameterUUID.equals(VOLUME_UUID)) {
-          weight = Integer.parseInt(productParameter.getParameterValue());
+      if (parameterUUID.equals(TEMP_UUID)) {
+        temp = Integer.parseInt(productParameter.getParameterValue());
+      }
+      if (parameterUUID.equals(TIME_UUID)) {
+        time = Integer.parseInt(productParameter.getParameterValue());
+      }
+      if (parameterUUID.equals(VOLUME_UUID)) {
+        weight = Integer.parseInt(productParameter.getParameterValue());
       }
     }
 
-    return Optional.of(new BrewDto(id, productName, temp, time, volume, weight, brewDate, description, userId));
+    return Optional.of(
+        new BrewDto(id, productName, temp, time, volume, weight, brewDate, description, userId));
   }
 
   public UUID getId() {

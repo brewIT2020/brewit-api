@@ -1,7 +1,5 @@
 package pl.brewit.brew.dto;
 
-import pl.brewit.user.UserDto;
-
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
@@ -89,6 +87,14 @@ public class BrewDtoBuilder {
   }
 
   public BrewDto build() {
-    return new BrewDto(id, brewDate, description, isPublic, brewingToolsDictionaryId, user, productDto, productParameters);
+    return new BrewDto(
+        id,
+        brewDate,
+        description,
+        isPublic,
+        brewingToolsDictionaryId,
+        user,
+        productDto,
+        productParameters);
   }
 }

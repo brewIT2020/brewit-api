@@ -1,8 +1,6 @@
 package pl.brewit.common.repository;
 
-import java.util.Collection;
 import java.util.Optional;
-import java.util.UUID;
 
 /**
  * Project: brewit-api
@@ -21,7 +19,7 @@ public interface CrudRepository<T> {
 
   Optional<T> findById(String uuid);
 
-//  Collection<T> findAll();
+  //  Collection<T> findAll();
 
   void remove(T object);
 }

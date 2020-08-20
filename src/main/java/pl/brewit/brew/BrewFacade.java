@@ -7,9 +7,9 @@ import java.util.UUID;
 
 public interface BrewFacade {
 
-    List<BrewDto> getBrewsSimpleForUserSortedByDateDesc(UUID userId, int startIndex, int getAmount);
-    BrewDto getBrew(UUID brewId);
-    void createBrew(BrewDto brewDto);
+  List<BrewDto> getBrewsSimpleForUserSortedByDateDesc(UUID userId, int startIndex, int getAmount);
+
+  BrewDto getBrew(UUID brewId);
+
+  void createBrew(BrewDto brewDto);
 }
-
-

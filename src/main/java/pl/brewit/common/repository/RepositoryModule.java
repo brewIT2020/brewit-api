@@ -2,9 +2,6 @@ package pl.brewit.common.repository;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.persist.jpa.JpaPersistModule;
-import pl.brewit.common.repository.CrudRepository;
-import pl.brewit.common.repository.JpaInitializer;
-import pl.brewit.common.repository.SimpleCrudRepository;
 
 /**
  * Project: brewit-api

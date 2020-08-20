@@ -5,8 +5,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import java.time.LocalDateTime;
 
 /**

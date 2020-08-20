@@ -6,9 +6,9 @@ import com.google.inject.Singleton;
 /**
  * Project: brewit-api
  *
- * Created on: 06.04.2020
+ * <p>Created on: 06.04.2020
  *
- * Author    : Kamil Szerląg
+ * <p>Author : Kamil Szerląg
  */
 public class UserModule extends AbstractModule {
 

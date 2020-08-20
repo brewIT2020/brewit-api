@@ -11,7 +11,6 @@ import javax.persistence.PersistenceException;
 import javax.persistence.criteria.CriteriaBuilder;
 import java.lang.reflect.ParameterizedType;
 import java.util.Optional;
-import java.util.UUID;
 
 /**
  * Project: brewit-api
@@ -82,8 +81,8 @@ public class SimpleCrudRepository<T> implements CrudRepository<T> {
   @Override
   public Optional<T> findById(String id) {
     Class<T> type =
-            ((Class)
-                    ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0]);
+        ((Class)
+            ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0]);
     T entity = null;
     try {
       entity = (T) getEntityManager().find(type, id);
@@ -94,10 +93,10 @@ public class SimpleCrudRepository<T> implements CrudRepository<T> {
   }
 
   // TODO: 22.03.2020 creating criteria query for retriving all active entities
-//  @Override
-//  public Collection<T> findAll() {
-//    CriteriaBuilder cb = getEntityManager().createQuery();
-//  }
+  //  @Override
+  //  public Collection<T> findAll() {
+  //    CriteriaBuilder cb = getEntityManager().createQuery();
+  //  }
 
   // TODO: 22.03.2020 removing entity
   @Override

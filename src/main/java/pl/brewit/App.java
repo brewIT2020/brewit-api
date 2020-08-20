@@ -38,7 +38,7 @@ public class App {
 
     injector.getInstance(SecurityConfig.class).configure();
 
-    //Mappings for controllers
+    // Mappings for controllers
     Javalin app =
         injector
             .getInstance(JavalinWebServer.class)
