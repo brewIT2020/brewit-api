@@ -14,7 +14,7 @@ public class BrewDtoBuilder {
   private String description;
   private boolean isPublic;
   private UUID brewingToolsDictionaryId;
-  private UserDto user;
+  private String user;
   private ProductDto productDto;
   private Set<ProductParameterDto> productParameters;
   private @NotBlank @Size(max = 75) String productName;
@@ -48,7 +48,7 @@ public class BrewDtoBuilder {
     return this;
   }
 
-  public BrewDtoBuilder setUser(UserDto user) {
+  public BrewDtoBuilder setUser(String user) {
     this.user = user;
     return this;
   }

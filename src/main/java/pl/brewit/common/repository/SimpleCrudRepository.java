@@ -80,7 +80,7 @@ public class SimpleCrudRepository<T> implements CrudRepository<T> {
   }
 
   @Override
-  public Optional<T> findById(UUID id) {
+  public Optional<T> findById(String id) {
     Class<T> type =
             ((Class)
                     ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0]);

@@ -19,7 +19,7 @@ public interface CrudRepository<T> {
 
   Optional<T> findById(Long uuid);
 
-  Optional<T> findById(UUID uuid);
+  Optional<T> findById(String uuid);
 
 //  Collection<T> findAll();
 

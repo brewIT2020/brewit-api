@@ -19,4 +19,11 @@ public class BrewServiceImpl implements BrewService {
     public List<Brew> getBrewsSimpleForUserSortedByDateDesc(UUID userId, int startIndex, int getAmount) {
         return brewRepository.getBrewsSimpleForUserSortedByDateDesc(userId, startIndex, getAmount);
     }
+
+    @Override
+    public void saveBrew(Brew brew) {
+        brewRepository.save(brew);
+    }
+
+
 }

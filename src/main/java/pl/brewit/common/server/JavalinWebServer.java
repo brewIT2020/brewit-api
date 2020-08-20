@@ -30,6 +30,7 @@ public final class JavalinWebServer {
   public Javalin app(final Injector injector) {
     return Javalin.create(
         config -> {
+          config.enableCorsForAllOrigins();
           ObjectMapper objectMapper =
               new ObjectMapper()
                   .configure(JsonParser.Feature.IGNORE_UNDEFINED, true)

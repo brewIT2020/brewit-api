@@ -47,25 +47,25 @@ public class BrewController {
     }
 
     private void getBrewsBasicForUserSortedByDateDesc(Context context) {
-        var userIdString = context.queryParam("userId");
+        var userId = context.queryParam("userId");
         var startIndexString = context.queryParam("startIndex");
         var getAmountString = context.queryParam("getAmount");
         List<BrewDto> brews;
 
         // TODO : pobierz usera z contextu
-        if (userIdString == null || userIdString.isEmpty()){
+        if (userId == null || userId.isEmpty()){
             context.status(401);
             return;
         }
         if (startIndexString == null || startIndexString.isEmpty())
             startIndexString = "0";
         if (getAmountString == null || getAmountString.isEmpty())
-            getAmountString = "1";
+            getAmountString = "10";
 
-        var userId = UUID.fromString(userIdString);
+        var userUuid = UUID.fromString(userId);
         var startIndex = Integer.parseInt(startIndexString);
         var getAmount = Integer.parseInt(getAmountString);
-        brews = brewFacade.getBrewsSimpleForUserSortedByDateDesc(userId, startIndex, getAmount);
+        brews = brewFacade.getBrewsSimpleForUserSortedByDateDesc(userUuid, startIndex, getAmount);
         context.json(brews);
         context.status(200);
     }
