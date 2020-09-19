@@ -11,6 +11,7 @@ import javax.persistence.PersistenceException;
 import javax.persistence.criteria.CriteriaBuilder;
 import java.lang.reflect.ParameterizedType;
 import java.util.Optional;
+import java.util.UUID;
 
 /**
  * Project: brewit-api
@@ -80,15 +81,12 @@ public class SimpleCrudRepository<T> implements CrudRepository<T> {
 
   @Override
   public Optional<T> findById(String id) {
+    UUID uuid = UUID.fromString(id);
     Class<T> type =
         ((Class)
             ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0]);
     T entity = null;
-    try {
-      entity = (T) getEntityManager().find(type, id);
-    } finally {
-      getEntityManager().close();
-    }
+    entity = (T) getEntityManager().find(type, uuid);
     return Optional.ofNullable(entity);
   }
 

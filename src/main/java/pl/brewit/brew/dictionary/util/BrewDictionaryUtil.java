@@ -25,5 +25,4 @@ public class BrewDictionaryUtil {
   public static String getBasicProductParameterTypeUUID(String parameterType) {
     return PRODUCT_PARAMETER_TYPE_TO_UUID_MAP.get(parameterType);
   }
-
 }

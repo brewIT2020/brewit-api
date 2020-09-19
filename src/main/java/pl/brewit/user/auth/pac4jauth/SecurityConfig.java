@@ -10,7 +10,7 @@ import org.pac4j.core.profile.CommonProfile;
 import org.pac4j.jwt.config.signature.SecretSignatureConfiguration;
 import org.pac4j.jwt.credentials.authenticator.JwtAuthenticator;
 import org.pac4j.jwt.profile.JwtGenerator;
-import pl.brewit.common.utils.AppProperties;
+import pl.brewit.common.utils.AppPropertiesUtil;
 import pl.brewit.user.AuthorizationRole;
 
 import java.util.Date;
@@ -34,10 +34,10 @@ public class SecurityConfig {
 
   private JwtAuthenticator jwtAuthenticator;
 
-  private AppProperties properties;
+  private AppPropertiesUtil properties;
 
   @Inject
-  public SecurityConfig(AppProperties properties) {
+  public SecurityConfig(AppPropertiesUtil properties) {
     this.jwtGenerator = new JwtGenerator<>();
     this.authorizationGenerator =
         new DefaultRolesPermissionsAuthorizationGenerator<>(

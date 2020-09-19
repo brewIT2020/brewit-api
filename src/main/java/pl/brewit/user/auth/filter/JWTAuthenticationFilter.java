@@ -13,7 +13,7 @@ import org.pac4j.core.profile.CommonProfile;
 import org.pac4j.jwt.profile.JwtGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import pl.brewit.common.utils.AppProperties;
+import pl.brewit.common.utils.AppPropertiesUtil;
 import pl.brewit.user.UserDto;
 import pl.brewit.user.auth.pac4jauth.BasicUsernamePasswordAuthenticator;
 import pl.brewit.user.auth.pac4jauth.RequestMatcher;
@@ -46,7 +46,8 @@ public class JWTAuthenticationFilter implements Filter {
 
   private final SecurityConfig securityConfig;
 
-  @Inject AppProperties properties;
+  @Inject
+  AppPropertiesUtil properties;
 
   @Inject
   public JWTAuthenticationFilter(

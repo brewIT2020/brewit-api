@@ -6,7 +6,6 @@ import io.javalin.apibuilder.EndpointGroup;
 import io.javalin.http.Context;
 import pl.brewit.brew.dto.BrewDto;
 
-import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 
@@ -31,7 +30,7 @@ public class BrewController {
   }
 
   private void createBrew(Context context) {
-    @Valid BrewDto brewDto = context.bodyAsClass(BrewDto.class);
+    BrewDto brewDto = context.bodyAsClass(BrewDto.class);
     brewFacade.createBrew(brewDto);
   }
 
@@ -58,8 +57,12 @@ public class BrewController {
       context.status(401);
       return;
     }
-    if (startIndexString == null || startIndexString.isEmpty()) startIndexString = "0";
-    if (getAmountString == null || getAmountString.isEmpty()) getAmountString = "10";
+    if (startIndexString == null || startIndexString.isEmpty()) {
+      startIndexString = "0";
+    }
+    if (getAmountString == null || getAmountString.isEmpty()) {
+      getAmountString = "50";
+    }
 
     var userUuid = UUID.fromString(userId);
     var startIndex = Integer.parseInt(startIndexString);

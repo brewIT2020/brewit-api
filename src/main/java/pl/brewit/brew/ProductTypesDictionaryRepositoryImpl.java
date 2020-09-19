@@ -8,7 +8,8 @@ import pl.brewit.common.repository.SimpleCrudRepository;
 import javax.persistence.EntityManager;
 
 public class ProductTypesDictionaryRepositoryImpl
-    extends SimpleCrudRepository<ProductTypesDictionary> implements ProductTypesDictionaryRepository {
+    extends SimpleCrudRepository<ProductTypesDictionary>
+    implements ProductTypesDictionaryRepository {
 
   @Inject
   public ProductTypesDictionaryRepositoryImpl(Provider<EntityManager> em) {

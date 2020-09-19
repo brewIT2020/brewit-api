@@ -9,16 +9,16 @@ import java.io.IOException;
 import java.util.Properties;
 
 @Singleton
-public class AppProperties {
+public class AppPropertiesUtil {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(AppProperties.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(AppPropertiesUtil.class);
   private static final String PROPERTIES_LOADING_ERROR = "Properties Loaded incorrectly!";
 
   private Properties properties;
 
-  public AppProperties() {
+  public AppPropertiesUtil() {
     properties = new Properties();
-    ClassLoader classLoader = AppProperties.class.getClassLoader();
+    ClassLoader classLoader = AppPropertiesUtil.class.getClassLoader();
     try (BufferedInputStream in =
         (BufferedInputStream) classLoader.getResourceAsStream("application.properties")) {
       properties.load(in);
