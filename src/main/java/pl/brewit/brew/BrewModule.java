@@ -10,5 +10,12 @@ public class BrewModule extends AbstractModule {
     bind(BrewService.class).to(BrewServiceImpl.class).in(Singleton.class);
     bind(BrewFacade.class).to(BrewFacadeImpl.class).in(Singleton.class);
     bind(BrewController.class).in(Singleton.class);
+
+    bind(ProductParametersDictionaryRepository.class)
+        .to(ProductParametersDictionaryRepositoryImpl.class)
+        .in(Singleton.class);
+    bind(ProductTypesDictionaryRepository.class)
+        .to(ProductTypesDictionaryRepositoryImpl.class)
+        .in(Singleton.class);
   }
 }

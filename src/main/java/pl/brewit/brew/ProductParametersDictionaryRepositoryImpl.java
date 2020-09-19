@@ -7,7 +7,9 @@ import pl.brewit.common.repository.SimpleCrudRepository;
 
 import javax.persistence.EntityManager;
 
-public class ProductParametersDictionaryRepositoryImpl extends SimpleCrudRepository<ProductParametersDictionary> implements ProductParametersDictionaryRepository{
+public class ProductParametersDictionaryRepositoryImpl
+    extends SimpleCrudRepository<ProductParametersDictionary>
+    implements ProductParametersDictionaryRepository {
 
   @Inject
   public ProductParametersDictionaryRepositoryImpl(Provider<EntityManager> em) {

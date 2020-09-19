@@ -14,19 +14,19 @@ import static pl.brewit.brew.dictionary.util.BrewDictionaryConst.*;
 
 public class BrewDto {
 
-  @Nullable
-  private UUID id;
+  @Nullable private UUID id;
 
   @NotBlank
-  @NotBlank @Size(min = 3, max = 75, message = "{validation.invalid.product.name}")
+  @NotBlank
+  @Size(min = 3, max = 75, message = "{validation.invalid.product.name}")
   private String productName;
 
   @NotBlank
-  @Size(max = 200, message = "{validation.invalid.product.description")
+  @Size(max = 200, message = "{validation.invalid.product.description}")
   private String descShort;
 
   // Temperature - Celsius [°C]
-  @NotBlank @Max(value = 120, message = "{validation.invalid.temp.max}")
+  @Max(value = 120, message = "{validation.invalid.temp.max}")
   @Min(value = -50, message = "{validation.invalid.temp.max}")
   private Integer temp;
 
@@ -36,12 +36,13 @@ public class BrewDto {
   private Integer time;
 
   // Volume - Milliliters [ml]
-  @Max(value = 1000, message = "{validation.invalid.volume.max}")
-  @Min(value = 0, message = "{validation.invalid.volume.min}")
+  @Max(value = 1000, message = "{validation.invalid.volume}")
+  @Min(value = 0, message = "{validation.invalid.volume}")
   private Integer volume;
 
   // Weight - Grams [gm]
   private Integer weight;
+
   @PastOrPresent(message = "{validation.invalid.date.present}")
   @Nullable
   private LocalDate brewDate;
@@ -110,7 +111,6 @@ public class BrewDto {
     LocalDate brewDate = entity.getBrewDate();
     String description = entity.getDescription();
     boolean isPublic = entity.isPublic();
-    UUID brewingToolsDictionaryId = entity.getBrewingTool().getId();
     String userId = entity.getUser().getId().toString();
     Set<ProductParameter> parameters = entity.getProduct().getProductParameterValues();
     for (ProductParameter productParameter : parameters) {
@@ -122,7 +122,7 @@ public class BrewDto {
       if (parameterUUID.equals(TIME_UUID)) {
         time = Integer.parseInt(productParameter.getParameterValue());
       }
-      if (parameterUUID.equals(VOLUME_UUID)) {
+      if (parameterUUID.equals(WEIGHT_UUID)) {
         weight = Integer.parseInt(productParameter.getParameterValue());
       }
     }

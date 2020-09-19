@@ -1,33 +1,31 @@
 package pl.brewit.common.config;
 
 import org.hibernate.validator.messageinterpolation.ResourceBundleMessageInterpolator;
-import org.hibernate.validator.resourceloading.AggregateResourceBundleLocator;
+import org.hibernate.validator.resourceloading.PlatformResourceBundleLocator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.validation.MessageInterpolator;
-import java.util.Collections;
 import java.util.Locale;
 
-public class CustomMessageInterpolator implements MessageInterpolator {
+public class CustomMessageInterpolator extends ResourceBundleMessageInterpolator
+    implements MessageInterpolator {
 
-  private static final Logger LOG =
-      LoggerFactory.getLogger(CustomMessageInterpolator.class);
-  private MessageInterpolator messageInterpolator;
+  private static final Logger LOG = LoggerFactory.getLogger(CustomMessageInterpolator.class);
 
   public CustomMessageInterpolator() {
-    messageInterpolator =
-        new ResourceBundleMessageInterpolator(
-            new AggregateResourceBundleLocator(Collections.singletonList("Messages")));
+    super(new PlatformResourceBundleLocator("Messages"));
+    LOG.info(
+        "[ CUSTOM ] MessageInterpolator configured" + CustomMessageInterpolator.class.getName());
   }
 
   @Override
   public String interpolate(String messageTemplate, Context context) {
-    return null;
+    return super.interpolate(messageTemplate, context);
   }
 
   @Override
   public String interpolate(String messageTemplate, Context context, Locale locale) {
-    return null;
+    return super.interpolate(messageTemplate, context, locale);
   }
 }
