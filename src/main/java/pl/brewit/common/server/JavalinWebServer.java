@@ -30,13 +30,14 @@ public final class JavalinWebServer {
   public Javalin app(final Injector injector) {
     return Javalin.create(
         config -> {
+          config.enableCorsForAllOrigins();
           ObjectMapper objectMapper =
               new ObjectMapper()
                   .configure(JsonParser.Feature.IGNORE_UNDEFINED, true)
                   .configure(JsonGenerator.Feature.IGNORE_UNKNOWN, true)
                   .setSerializationInclusion(JsonInclude.Include.NON_NULL);
           JavalinJackson.configure(objectMapper);
-          
+
           // TODO: 19.06.2020 enable if DEV environment
           config.enableDevLogging();
 

@@ -2,40 +2,57 @@ package pl.brewit.brew.dto;
 
 import pl.brewit.brew.entity.Brew;
 import pl.brewit.brew.entity.ProductParameter;
-import pl.brewit.user.UserDto;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Past;
-import javax.validation.constraints.Size;
+import javax.annotation.Nullable;
+import javax.validation.constraints.*;
 import java.time.LocalDate;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
+import static pl.brewit.brew.dictionary.util.BrewDictionaryConst.*;
+
 public class BrewDto {
 
+  @Nullable
   private UUID id;
 
   @NotBlank
-  @Size(max = 75) private String productName;
-  @NotBlank @Size(max = 200) private String descShort;
-  //Temperature - Celsius [°C]
+  @NotBlank @Size(min = 3, max = 75, message = "{validation.invalid.product.name}")
+  private String productName;
+
+  @NotBlank
+  @Size(max = 200, message = "{validation.invalid.product.description")
+  private String descShort;
+
+  // Temperature - Celsius [°C]
+  @NotBlank @Max(value = 120, message = "{validation.invalid.temp.max}")
+  @Min(value = -50, message = "{validation.invalid.temp.max}")
   private Integer temp;
-  //Time - Milliseconds [ms]
+
+  // Time - Milliseconds [ms]
+  @Max(value = 180, message = "{validation.invalid.time.max}")
+  @Min(value = 0, message = "{validation.invalid.time.min}")
   private Integer time;
-  //Volume - Milliliters [ml]
+
+  // Volume - Milliliters [ml]
+  @Max(value = 1000, message = "{validation.invalid.volume.max}")
+  @Min(value = 0, message = "{validation.invalid.volume.min}")
   private Integer volume;
-  //Weight - Grams [gm]
+
+  // Weight - Grams [gm]
   private Integer weight;
+  @PastOrPresent(message = "{validation.invalid.date.present}")
+  @Nullable
+  private LocalDate brewDate;
 
-  @Past private LocalDate brewDate;
-
-  @Size(max = 5000)
+  @Size(max = 5000, message = "{validation.invalid.description.max}")
+  @Nullable
   private String description;
 
   private boolean isPublic;
   private UUID brewingToolsDictionaryId;
-  private UserDto user;
+  private String userId;
   private ProductDto productDto;
   private Set<ProductParameterDto> productParameters;
 
@@ -45,7 +62,7 @@ public class BrewDto {
       String description,
       boolean isPublic,
       UUID brewingToolsDictionaryId,
-      UserDto user,
+      String userId,
       ProductDto productDto,
       Set<ProductParameterDto> productParameters) {
     this.id = id;
@@ -53,12 +70,22 @@ public class BrewDto {
     this.description = description;
     this.isPublic = isPublic;
     this.brewingToolsDictionaryId = brewingToolsDictionaryId;
-    this.user = user;
+    this.userId = userId;
     this.productDto = productDto;
     this.productParameters = productParameters;
   }
 
-  private BrewDto(UUID id, @NotBlank @Size(max = 75) String productName, Integer temp, Integer time, Integer volume, Integer weight, @Past LocalDate brewDate, @Size(max = 5000) String description) {
+  private BrewDto(
+      UUID id,
+      String productName,
+      Integer temp,
+      Integer time,
+      Integer volume,
+      Integer weight,
+      LocalDate brewDate,
+      String description,
+      String userId) {
+
     this.id = id;
     this.productName = productName;
     this.temp = temp;
@@ -67,42 +94,41 @@ public class BrewDto {
     this.weight = weight;
     this.brewDate = brewDate;
     this.description = description;
+    this.userId = userId;
   }
 
-  public BrewDto() {
-
-  }
+  public BrewDto() {}
 
   public static Optional<BrewDto> fillDataSimplifiedFromDao(Brew entity) {
     if (entity == null) return Optional.empty();
-    var temp = 100;
-    var time = 120;
-    var weight = 10;
-    var volume = 120;
-    var id = entity.getId();
-    var productName = entity.getProduct().getProductName();
-    var brewDate = entity.getBrewDate();
-    var description = entity.getDescription();
-    var isPublic = entity.isPublic();
-    var brewingToolsDictionaryId = entity.getBrewingTool().getId();
-    var user = new UserDto(entity.getUser().getUsername(), null, null);
+    int temp = 100;
+    int time = 120;
+    int weight = 10;
+    int volume = 120;
+    UUID id = entity.getId();
+    String productName = entity.getProduct().getProductName();
+    LocalDate brewDate = entity.getBrewDate();
+    String description = entity.getDescription();
+    boolean isPublic = entity.isPublic();
+    UUID brewingToolsDictionaryId = entity.getBrewingTool().getId();
+    String userId = entity.getUser().getId().toString();
     Set<ProductParameter> parameters = entity.getProduct().getProductParameterValues();
     for (ProductParameter productParameter : parameters) {
       // TODO : pobierac słowniki z bazy
-      switch (productParameter.getParameter().getId().toString()) {
-        case "359e5384-4698-41af-ad2b-c0f1cc336e15":
-          temp = Integer.parseInt(productParameter.getParameterValue());
-          break;
-        case "c44fd0a2-7254-4695-a475-d611759f967d":
-          time = Integer.parseInt(productParameter.getParameterValue());
-          break;
-        case "9696f96e-a687-11ea-bb37-0242ac130002":
-          weight = Integer.parseInt(productParameter.getParameterValue());
-          break;
+      String parameterUUID = productParameter.getParameter().getId().toString();
+      if (parameterUUID.equals(TEMP_UUID)) {
+        temp = Integer.parseInt(productParameter.getParameterValue());
+      }
+      if (parameterUUID.equals(TIME_UUID)) {
+        time = Integer.parseInt(productParameter.getParameterValue());
+      }
+      if (parameterUUID.equals(VOLUME_UUID)) {
+        weight = Integer.parseInt(productParameter.getParameterValue());
       }
     }
 
-    return Optional.of(new BrewDto(id, productName, temp, time, volume, weight, brewDate, description));
+    return Optional.of(
+        new BrewDto(id, productName, temp, time, volume, weight, brewDate, description, userId));
   }
 
   public UUID getId() {
@@ -193,12 +219,12 @@ public class BrewDto {
     this.brewingToolsDictionaryId = brewingToolsDictionaryId;
   }
 
-  public UserDto getUser() {
-    return user;
+  public String getUserId() {
+    return userId;
   }
 
-  public void setUser(UserDto user) {
-    this.user = user;
+  public void setUserId(String userId) {
+    this.userId = userId;
   }
 
   public ProductDto getProductDto() {

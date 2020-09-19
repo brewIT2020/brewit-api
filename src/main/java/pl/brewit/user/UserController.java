@@ -2,11 +2,14 @@ package pl.brewit.user;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import io.javalin.Javalin;
 import io.javalin.apibuilder.EndpointGroup;
 import io.javalin.http.Context;
 import io.javalin.plugin.json.JavalinJson;
+import org.apache.commons.lang3.StringUtils;
+import org.pac4j.core.profile.CommonProfile;
+import pl.brewit.user.auth.pac4jauth.SecurityContextHolder;
 
+import java.io.IOException;
 import java.util.List;
 
 import static io.javalin.apibuilder.ApiBuilder.*;
@@ -21,45 +24,55 @@ import static io.javalin.apibuilder.ApiBuilder.*;
 @Singleton
 public class UserController {
 
-    private UserFacade userFacade;
+  private UserFacade userFacade;
 
-    @Inject
-    public UserController(UserFacade userFacade) {
-        this.userFacade = userFacade;
-    }
+  @Inject
+  public UserController(UserFacade userFacade) {
+    this.userFacade = userFacade;
+  }
 
-    public EndpointGroup endpoints() {
-        return () -> {
-            post(this::signUp);
-            get(this::getAllUsers);
-            path(":id", () -> {
-                get(this::getUser);
-                put(this::updateUser);
-            });
-        };
-    }
+  public EndpointGroup endpoints() {
+    return () -> {
+      post(this::signUp);
+      get(this::getAllUsers);
+      path(
+          ":id",
+          () -> {
+            get(this::getUser);
+            put(this::updateUser);
+          });
+    };
+  }
 
-    //This method is public because we are mapping request under /sign-up
-    public void signUp(Context context) {
-        UserDto userDto = JavalinJson.fromJson(context.body(), UserDto.class);
-        userFacade.register(userDto);
-        context.status(201);
-    }
+  // This method is public because we are mapping request under /sign-up
+  public void signUp(Context context) {
+    UserDto userDto = JavalinJson.fromJson(context.body(), UserDto.class);
+    userFacade.register(userDto);
+    context.status(201);
+  }
 
-    private void getAllUsers(Context context) {
-        List<UserDto> users = userFacade.getAllUsers();
-        context.json(users);
-    }
+  private void getAllUsers(Context context) {
+    List<UserDto> users = userFacade.getAllUsers();
+    context.json(users);
+  }
 
-    private void getUser(Context context) {
-        String userId = context.pathParam("id");
-        UserDto user = userFacade.getUser(userId);
-        context.json(user);
+  private void getUser(Context context) throws IOException {
+    String userId = context.pathParam("id");
+    CommonProfile profile = SecurityContextHolder.getContext().getUserProfile();
+    if (!StringUtils.equals(profile.getId(), userId)) {
+      context.res.sendError(401, "Illegal Access!");
     }
+    UserDto user = userFacade.getUser(userId);
+    context.json(user);
+  }
 
-    private void updateUser(Context context) {
-        String userId = context.pathParam("id");
-        UserDto userDto = JavalinJson.fromJson(context.body(), UserDto.class);
-        userFacade.updateUser(userId, userDto);
+  private void updateUser(Context context) throws IOException {
+    String userId = context.pathParam("id");
+    CommonProfile profile = SecurityContextHolder.getContext().getUserProfile();
+    if (!StringUtils.equals(profile.getId(), userId)) {
+      context.res.sendError(401, "Illegal Access!");
     }
+    UserDto userDto = JavalinJson.fromJson(context.body(), UserDto.class);
+    userFacade.updateUser(userId, userDto);
+  }
 }

@@ -1,7 +1,6 @@
 package pl.brewit.common.server;
 
 import com.google.inject.AbstractModule;
-import pl.brewit.common.utils.AppProperties;
 
 /**
  * Project: brewit-api

@@ -18,12 +18,11 @@ import pl.brewit.user.UserService;
 import pl.brewit.user.auth.crypt.PasswordEncryptor;
 /**
  * Project: brewit-api
- * <p>
- * Created on: 22.03.2020
- * <p>
- * Author : Kamil Szerląg
+ *
+ * <p>Created on: 22.03.2020
+ *
+ * <p>Author : Kamil Szerląg
  */
-
 public class BasicUsernamePasswordAuthenticator implements Authenticator {
 
   private static final Logger LOGGER =

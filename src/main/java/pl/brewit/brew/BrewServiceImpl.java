@@ -8,15 +8,21 @@ import java.util.UUID;
 
 public class BrewServiceImpl implements BrewService {
 
-    private BrewRepository brewRepository;
+  private BrewRepository brewRepository;
 
-    @Inject
-    public BrewServiceImpl(BrewRepository brewRepository) {
-        this.brewRepository = brewRepository;
-    }
+  @Inject
+  public BrewServiceImpl(BrewRepository brewRepository) {
+    this.brewRepository = brewRepository;
+  }
 
-    @Override
-    public List<Brew> getBrewsSimpleForUserSortedByDateDesc(UUID userId, int startIndex, int getAmount) {
-        return brewRepository.getBrewsSimpleForUserSortedByDateDesc(userId, startIndex, getAmount);
-    }
+  @Override
+  public List<Brew> getBrewsSimpleForUserSortedByDateDesc(
+      UUID userId, int startIndex, int getAmount) {
+    return brewRepository.getBrewsSimpleForUserSortedByDateDesc(userId, startIndex, getAmount);
+  }
+
+  @Override
+  public void saveBrew(Brew brew) {
+    brewRepository.save(brew);
+  }
 }

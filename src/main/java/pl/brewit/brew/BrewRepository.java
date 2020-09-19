@@ -7,5 +7,5 @@ import java.util.List;
 import java.util.UUID;
 
 public interface BrewRepository extends CrudRepository<Brew> {
-    List<Brew> getBrewsSimpleForUserSortedByDateDesc(UUID userId, int skipAmount, int getAmount);
+  List<Brew> getBrewsSimpleForUserSortedByDateDesc(UUID userId, int skipAmount, int getAmount);
 }

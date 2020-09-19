@@ -2,18 +2,19 @@ package pl.brewit.user.auth.pac4jauth;
 
 import org.pac4j.core.context.HttpConstants;
 import org.pac4j.core.context.WebContext;
-import org.pac4j.core.matching.*;
+import org.pac4j.core.matching.HeaderMatcher;
+import org.pac4j.core.matching.HttpMethodMatcher;
+import org.pac4j.core.matching.PathMatcher;
 
 import java.util.Arrays;
 import java.util.Set;
 /**
  * Project: brewit-api
- * <p>
- * Created on: 22.03.2020
- * <p>
- * Author : Kamil Szerląg
+ *
+ * <p>Created on: 22.03.2020
+ *
+ * <p>Author : Kamil Szerląg
  */
-
 public class RequestMatcher {
 
   private final PathMatcher pathMatcher;
@@ -31,7 +32,8 @@ public class RequestMatcher {
   }
 
   public boolean requiresAuthentication(WebContext context) {
-    return context.getRequestHeader(HttpConstants.AUTHORIZATION_HEADER) != null || pathMatcher.matches(context);
+    return context.getRequestHeader(HttpConstants.AUTHORIZATION_HEADER) != null
+        || pathMatcher.matches(context);
   }
 
   public PathMatcher getPathMatcher() {

@@ -6,27 +6,30 @@ import java.util.UUID;
 
 public class BaseDictionaryDto {
 
-    private UUID id;
-    @NotBlank @Size(max = 100) private String name;
+  private UUID id;
 
-    public BaseDictionaryDto(UUID id, @NotBlank @Size(max = 100) String name) {
-        this.id = id;
-        this.name = name;
-    }
+  @NotBlank
+  @Size(max = 100)
+  private String name;
 
-    public UUID getId() {
-        return id;
-    }
+  public BaseDictionaryDto(UUID id, @NotBlank @Size(max = 100) String name) {
+    this.id = id;
+    this.name = name;
+  }
 
-    public void setId(UUID id) {
-        this.id = id;
-    }
+  public UUID getId() {
+    return id;
+  }
 
-    public String getName() {
-        return name;
-    }
+  public void setId(UUID id) {
+    this.id = id;
+  }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
 }

@@ -1,6 +1,9 @@
 package pl.brewit.common.repository;
 
-import javax.persistence.*;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
 import java.util.UUID;
 
 /**
@@ -17,7 +20,7 @@ public class BaseEntity {
   @GeneratedValue(strategy = GenerationType.AUTO)
   protected UUID id;
 
-//  @Embedded protected BaseInfo baseInfo;
+  //  @Embedded protected BaseInfo baseInfo;
 
   public UUID getId() {
     return id;
@@ -27,11 +30,11 @@ public class BaseEntity {
     this.id = id;
   }
 
-//  public BaseInfo getBaseInfo() {
-//    return baseInfo;
-//  }
-//
-//  public void setBaseInfo(BaseInfo baseInfo) {
-//    this.baseInfo = baseInfo;
-//  }
+  //  public BaseInfo getBaseInfo() {
+  //    return baseInfo;
+  //  }
+  //
+  //  public void setBaseInfo(BaseInfo baseInfo) {
+  //    this.baseInfo = baseInfo;
+  //  }
 }

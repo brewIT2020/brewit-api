@@ -6,37 +6,43 @@ import java.util.UUID;
 
 public class ProductParameterDto {
 
-    @NotBlank @Size(max = 100) private String value;
-    private UUID productTypesDictionaryId;
-    private UUID productParametersDictionaryId;
+  @NotBlank
+  @Size(max = 100)
+  private String value;
 
-    public ProductParameterDto(@NotBlank @Size(max = 100) String value, UUID productTypesDictionaryId, UUID productParametersDictionaryId) {
-        this.value = value;
-        this.productTypesDictionaryId = productTypesDictionaryId;
-        this.productParametersDictionaryId = productParametersDictionaryId;
-    }
+  private UUID productTypesDictionaryId;
+  private UUID productParametersDictionaryId;
 
-    public String getValue() {
-        return value;
-    }
+  public ProductParameterDto(
+      @NotBlank @Size(max = 100) String value,
+      UUID productTypesDictionaryId,
+      UUID productParametersDictionaryId) {
+    this.value = value;
+    this.productTypesDictionaryId = productTypesDictionaryId;
+    this.productParametersDictionaryId = productParametersDictionaryId;
+  }
 
-    public void setValue(String value) {
-        this.value = value;
-    }
+  public String getValue() {
+    return value;
+  }
 
-    public UUID getProductTypesDictionaryId() {
-        return productTypesDictionaryId;
-    }
+  public void setValue(String value) {
+    this.value = value;
+  }
 
-    public void setProductTypesDictionaryId(UUID productTypesDictionaryId) {
-        this.productTypesDictionaryId = productTypesDictionaryId;
-    }
+  public UUID getProductTypesDictionaryId() {
+    return productTypesDictionaryId;
+  }
 
-    public UUID getProductParametersDictionaryId() {
-        return productParametersDictionaryId;
-    }
+  public void setProductTypesDictionaryId(UUID productTypesDictionaryId) {
+    this.productTypesDictionaryId = productTypesDictionaryId;
+  }
 
-    public void setProductParametersDictionaryId(UUID productParametersDictionaryId) {
-        this.productParametersDictionaryId = productParametersDictionaryId;
-    }
+  public UUID getProductParametersDictionaryId() {
+    return productParametersDictionaryId;
+  }
+
+  public void setProductParametersDictionaryId(UUID productParametersDictionaryId) {
+    this.productParametersDictionaryId = productParametersDictionaryId;
+  }
 }

@@ -10,9 +10,9 @@ import pl.brewit.user.auth.pac4jauth.SecurityConfig;
 /**
  * Project: brewit-api
  *
- * Created on: 11.04.2020
+ * <p>Created on: 11.04.2020
  *
- * Author    : Kamil Szerląg
+ * <p>Author : Kamil Szerląg
  */
 public class AuthModule extends AbstractModule {
 

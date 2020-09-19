@@ -6,18 +6,19 @@ import java.util.UUID;
 
 public class ProductParametersDictionaryDto extends BaseDictionaryDto {
 
-    private UUID unitDictionaryId;
+  private UUID unitDictionaryId;
 
-    public ProductParametersDictionaryDto(UUID id, @NotBlank @Size(max = 100) String name, UUID unitDictionaryId) {
-        super(id, name);
-        this.unitDictionaryId = unitDictionaryId;
-    }
+  public ProductParametersDictionaryDto(
+      UUID id, @NotBlank @Size(max = 100) String name, UUID unitDictionaryId) {
+    super(id, name);
+    this.unitDictionaryId = unitDictionaryId;
+  }
 
-    public UUID getUnitDictionaryId() {
-        return unitDictionaryId;
-    }
+  public UUID getUnitDictionaryId() {
+    return unitDictionaryId;
+  }
 
-    public void setUnitDictionaryId(UUID unitDictionaryId) {
-        this.unitDictionaryId = unitDictionaryId;
-    }
+  public void setUnitDictionaryId(UUID unitDictionaryId) {
+    this.unitDictionaryId = unitDictionaryId;
+  }
 }

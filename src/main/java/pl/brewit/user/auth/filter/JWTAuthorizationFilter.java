@@ -8,6 +8,7 @@ import org.pac4j.core.profile.CommonProfile;
 import org.pac4j.jwt.credentials.authenticator.JwtAuthenticator;
 import pl.brewit.user.auth.pac4jauth.RequestMatcher;
 import pl.brewit.user.auth.pac4jauth.SecurityConfig;
+import pl.brewit.user.auth.pac4jauth.SecurityContextHolder;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -52,7 +53,7 @@ public class JWTAuthorizationFilter implements Filter {
       return;
     }
 
-    CommonProfile commonProfile =
+    final CommonProfile commonProfile =
         jwtAuthenticator.validateToken(authHeader.replace(HttpConstants.BEARER_HEADER_PREFIX, ""));
 
     // TODO: 16.06.2020 When commonProfile is Authorized should be added to the User context
@@ -60,7 +61,13 @@ public class JWTAuthorizationFilter implements Filter {
       unsuccessfulAuthorization(response);
     }
 
-    chain.doFilter(request, response);
+    try {
+      SecurityContextHolder.initialize(commonProfile);
+
+      chain.doFilter(request, response);
+    } finally {
+      SecurityContextHolder.destroy();
+    }
   }
 
   @Override
