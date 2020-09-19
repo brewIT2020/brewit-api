@@ -6,6 +6,7 @@ import io.javalin.apibuilder.EndpointGroup;
 import io.javalin.http.Context;
 import pl.brewit.brew.dto.BrewDto;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 
@@ -30,7 +31,7 @@ public class BrewController {
   }
 
   private void createBrew(Context context) {
-    BrewDto brewDto = context.bodyAsClass(BrewDto.class);
+    @Valid BrewDto brewDto = context.bodyAsClass(BrewDto.class);
     brewFacade.createBrew(brewDto);
   }
 

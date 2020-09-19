@@ -7,14 +7,15 @@ import pl.brewit.user.User;
 import pl.brewit.user.UserService;
 import pl.brewit.user.auth.pac4jauth.SecurityContextHolder;
 
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 public class BrewFacadeImpl implements BrewFacade {
 
-  private BrewService brewService;
-  private UserService userService;
+  private final BrewService brewService;
+  private final UserService userService;
 
   @Inject
   public BrewFacadeImpl(BrewService brewService, UserService userService) {
@@ -29,8 +30,8 @@ public class BrewFacadeImpl implements BrewFacade {
         brewService.getBrewsSimpleForUserSortedByDateDesc(userId, startIndex, getAmount);
     List<BrewDto> dtos = new ArrayList<>();
     for (Brew dao : brews) {
-      var dto = new BrewDto().fillDataSimplifiedFromDao(dao);
-      dto.ifPresent(brewDto -> dtos.add(brewDto));
+      var dto = BrewDto.fillDataSimplifiedFromDao(dao);
+      dto.ifPresent(dtos::add);
     }
     return dtos;
   }
@@ -45,6 +46,9 @@ public class BrewFacadeImpl implements BrewFacade {
     Brew brew = new Brew();
     User user = userService.findById(SecurityContextHolder.getContext().getUserProfile().getId());
     brew.setUser(user);
+    brew.setBrewDate(ZonedDateTime.now().toLocalDate());
+    brew.setDescription(brew.getDescription());
+//    brew.setProduct();
     // TODO: 29.06.2020 Setting parameters for brew (╯°□°)╯︵ ┻━┻
     brewService.saveBrew(brew);
   }

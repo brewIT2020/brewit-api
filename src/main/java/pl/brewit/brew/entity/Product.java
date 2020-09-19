@@ -40,12 +40,12 @@ public class Product extends BaseEntity {
 
   public Product() {}
 
-  public Product(
-      String productName,
-      boolean isTemplate,
-      CountriesDictionary country,
-      ProductTypesDictionary productType,
-      Set<ProductParameter> productParameterValues) {
+  private Product(
+          String productName,
+          boolean isTemplate,
+          CountriesDictionary country,
+          ProductTypesDictionary productType,
+          Set<ProductParameter> productParameterValues) {
     this.productName = productName;
     this.isTemplate = isTemplate;
     this.country = country;

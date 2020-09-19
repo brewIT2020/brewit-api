@@ -3,39 +3,51 @@ package pl.brewit.brew.dto;
 import pl.brewit.brew.entity.Brew;
 import pl.brewit.brew.entity.ProductParameter;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Past;
-import javax.validation.constraints.Size;
+import javax.annotation.Nullable;
+import javax.validation.constraints.*;
 import java.time.LocalDate;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
-import static pl.brewit.brew.BrewConst.*;
+import static pl.brewit.brew.dictionary.util.BrewDictionaryConst.*;
 
 public class BrewDto {
 
+  @Nullable
   private UUID id;
 
   @NotBlank
-  @Size(max = 75)
+  @NotBlank @Size(min = 3, max = 75, message = "{validation.invalid.product.name}")
   private String productName;
 
   @NotBlank
-  @Size(max = 200)
+  @Size(max = 200, message = "{validation.invalid.product.description")
   private String descShort;
+
   // Temperature - Celsius [°C]
+  @NotBlank @Max(value = 120, message = "{validation.invalid.temp.max}")
+  @Min(value = -50, message = "{validation.invalid.temp.max}")
   private Integer temp;
+
   // Time - Milliseconds [ms]
+  @Max(value = 180, message = "{validation.invalid.time.max}")
+  @Min(value = 0, message = "{validation.invalid.time.min}")
   private Integer time;
+
   // Volume - Milliliters [ml]
+  @Max(value = 1000, message = "{validation.invalid.volume.max}")
+  @Min(value = 0, message = "{validation.invalid.volume.min}")
   private Integer volume;
+
   // Weight - Grams [gm]
   private Integer weight;
+  @PastOrPresent(message = "{validation.invalid.date.present}")
+  @Nullable
+  private LocalDate brewDate;
 
-  @Past private LocalDate brewDate;
-
-  @Size(max = 5000)
+  @Size(max = 5000, message = "{validation.invalid.description.max}")
+  @Nullable
   private String description;
 
   private boolean isPublic;
@@ -65,14 +77,15 @@ public class BrewDto {
 
   private BrewDto(
       UUID id,
-      @NotBlank @Size(max = 75) String productName,
+      String productName,
       Integer temp,
       Integer time,
       Integer volume,
       Integer weight,
-      @Past LocalDate brewDate,
-      @Size(max = 5000) String description,
+      LocalDate brewDate,
+      String description,
       String userId) {
+
     this.id = id;
     this.productName = productName;
     this.temp = temp;
