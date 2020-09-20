@@ -17,7 +17,7 @@ public class BrewController {
   private BrewFacade brewFacade;
 
   @Inject
-  public BrewController(BrewFacade brewFacade) {
+  public BrewController(final BrewFacade brewFacade) {
     this.brewFacade = brewFacade;
   }
 
@@ -30,12 +30,12 @@ public class BrewController {
   }
 
   private void createBrew(Context context) {
-    BrewDto brewDto = context.bodyAsClass(BrewDto.class);
+    final BrewDto brewDto = context.bodyAsClass(BrewDto.class);
     brewFacade.createBrew(brewDto);
   }
 
   private void getBrew(Context context) {
-    String brewIdString = context.queryParam("brewId");
+    final String brewIdString = context.queryParam("brewId");
     BrewDto brewDto;
 
     if (brewIdString != null && !brewIdString.isEmpty()) {

@@ -17,12 +17,11 @@ public class BrewDto {
   @Nullable private UUID id;
 
   @NotBlank
-  @NotBlank
   @Size(min = 3, max = 75, message = "{validation.invalid.product.name}")
   private String productName;
 
-  @NotBlank
   @Size(max = 200, message = "{validation.invalid.product.description}")
+  @Nullable
   private String descShort;
 
   // Temperature - Celsius [°C]
@@ -48,7 +47,7 @@ public class BrewDto {
   private LocalDate brewDate;
 
   @Size(max = 5000, message = "{validation.invalid.description.max}")
-  @Nullable
+  @NotBlank
   private String description;
 
   private boolean isPublic;
