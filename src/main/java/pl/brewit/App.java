@@ -4,12 +4,14 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.servlet.ServletModule;
 import io.javalin.Javalin;
+import org.apache.commons.lang3.StringUtils;
 import pl.brewit.brew.BrewController;
 import pl.brewit.brew.BrewModule;
 import pl.brewit.common.handler.ResponseExceptionHandler;
 import pl.brewit.common.repository.RepositoryModule;
 import pl.brewit.common.server.JavalinWebServer;
 import pl.brewit.common.server.WebServerModule;
+import pl.brewit.common.utils.AppPropertiesUtil;
 import pl.brewit.common.utils.UtilsModule;
 import pl.brewit.user.UserController;
 import pl.brewit.user.UserModule;
@@ -24,10 +26,11 @@ import static io.javalin.apibuilder.ApiBuilder.path;
 public class App {
 
   private static final String JPA_UNIT_BREWIT = "BrewIT";
+  private static final int DEFAULT_SERVER_PORT = 8888;
 
   public static void main(String[] args) {
     // Injecting modules for application DI
-    Injector injector =
+    final Injector injector =
         Guice.createInjector(
             new WebServerModule(),
             new UtilsModule(),
@@ -42,7 +45,7 @@ public class App {
     injector.getInstance(SecurityConfig.class).configure();
 
     // Mappings for controllers
-    Javalin app =
+    final Javalin app =
         injector
             .getInstance(JavalinWebServer.class)
             .app(injector)
@@ -60,6 +63,12 @@ public class App {
                       .getInstance(ResponseExceptionHandler.class)
                       .handleException(exception, ctx);
                 });
-    app.start(7000);
+
+    final int serverPort = prepareServerPort(injector.getInstance(AppPropertiesUtil.class).getValue("app.server.port"));
+    app.start(serverPort);
+  }
+
+  private static int prepareServerPort(String property) {
+    return StringUtils.isNotBlank(property) ? Integer.parseInt(property) : DEFAULT_SERVER_PORT;
   }
 }
