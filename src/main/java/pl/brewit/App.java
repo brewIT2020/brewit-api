@@ -30,7 +30,7 @@ public class App {
 
   public static void main(String[] args) {
     // Injecting modules for application DI
-    Injector injector =
+    final Injector injector =
         Guice.createInjector(
             new WebServerModule(),
             new UtilsModule(),
@@ -45,7 +45,7 @@ public class App {
     injector.getInstance(SecurityConfig.class).configure();
 
     // Mappings for controllers
-    Javalin app =
+    final Javalin app =
         injector
             .getInstance(JavalinWebServer.class)
             .app(injector)
@@ -64,7 +64,7 @@ public class App {
                       .handleException(exception, ctx);
                 });
 
-    int serverPort = prepareServerPort(injector.getInstance(AppPropertiesUtil.class).getValue("app.server.port"));
+    final int serverPort = prepareServerPort(injector.getInstance(AppPropertiesUtil.class).getValue("app.server.port"));
     app.start(serverPort);
   }
 
