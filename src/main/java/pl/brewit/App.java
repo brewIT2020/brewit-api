@@ -4,6 +4,7 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.servlet.ServletModule;
 import io.javalin.Javalin;
+import org.apache.commons.lang3.StringUtils;
 import pl.brewit.brew.BrewController;
 import pl.brewit.brew.BrewModule;
 import pl.brewit.common.handler.ResponseExceptionHandler;
@@ -25,7 +26,7 @@ import static io.javalin.apibuilder.ApiBuilder.path;
 public class App {
 
   private static final String JPA_UNIT_BREWIT = "BrewIT";
-  private static final int DEFAULT_SERVER_PORT = 7000;
+  private static final int DEFAULT_SERVER_PORT = 8888;
 
   public static void main(String[] args) {
     // Injecting modules for application DI
@@ -62,6 +63,12 @@ public class App {
                       .getInstance(ResponseExceptionHandler.class)
                       .handleException(exception, ctx);
                 });
-    app.start(Integer.parseInt(injector.getInstance(AppPropertiesUtil.class).getValue("app.server.port")));
+
+    int serverPort = prepareServerPort(injector.getInstance(AppPropertiesUtil.class).getValue("app.server.port"));
+    app.start(serverPort);
+  }
+
+  private static int prepareServerPort(String property) {
+    return StringUtils.isNotBlank(property) ? Integer.parseInt(property) : DEFAULT_SERVER_PORT;
   }
 }
